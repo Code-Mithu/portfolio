@@ -2,21 +2,21 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { clsx } from 'clsx';
 import { Container } from '../ui/Container';
 
 const navLinks = [
+  { name: 'About', href: '/#about' },
+  { name: 'Skills', href: '/#skills' },
   { name: 'Projects', href: '/#projects' },
   { name: 'Experience', href: '/#experience' },
-  { name: 'About', href: '/#about' },
   { name: 'Contact', href: '/#contact' },
 ];
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const pathname = usePathname();
+  const [activeSection, setActiveSection] = useState('');
   const menuRef = useRef<HTMLDivElement>(null);
 
   // Handle focus trap / closing on escape / body scroll lock
@@ -28,7 +28,6 @@ export const Navbar = () => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       document.addEventListener('keydown', handleEscape);
-      // Small timeout to ensure menu is rendered before focusing
       setTimeout(() => menuRef.current?.querySelector('a')?.focus(), 50);
     } else {
       document.body.style.overflow = '';
@@ -39,6 +38,25 @@ export const Navbar = () => {
       document.removeEventListener('keydown', handleEscape);
     };
   }, [isOpen]);
+
+  // Handle scroll position tracking
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    const sections = document.querySelectorAll('section[id]');
+    sections.forEach((section) => observer.observe(section));
+
+    return () => sections.forEach((section) => observer.unobserve(section));
+  }, []);
 
   return (
     <nav className="fixed w-full z-50 bg-white shadow-sm h-16 flex items-center" aria-label="Main navigation">
@@ -55,7 +73,7 @@ export const Navbar = () => {
               href={link.href}
               className={clsx(
                 "text-secondary hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded",
-                pathname === link.href && "text-primary font-semibold"
+                activeSection === link.href.split('#')[1] && "text-primary font-semibold"
               )}
             >
               {link.name}
@@ -106,7 +124,7 @@ export const Navbar = () => {
               onClick={() => setIsOpen(false)}
               className={clsx(
                 "text-secondary hover:text-primary p-2 focus:outline-none focus:ring-2 focus:ring-primary rounded",
-                pathname === link.href && "text-primary font-semibold"
+                activeSection === link.href.split('#')[1] && "text-primary font-semibold"
               )}
             >
               {link.name}
