@@ -6,16 +6,13 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+      },
       colors: {
-        primary: {
-          DEFAULT: '#2563EB', // Deep Indigo
-        },
-        secondary: {
-          DEFAULT: '#64748B', // Slate
-        },
-        accent: {
-          DEFAULT: '#F59E0B', // Amber
-        },
+        primary: '#2563EB',
+        secondary: '#64748B',
+        accent: '#F59E0B',
       },
     },
   },
