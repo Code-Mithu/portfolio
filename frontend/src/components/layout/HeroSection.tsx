@@ -1,6 +1,7 @@
 import React from 'react';
 import { Section } from '../ui/Section';
 import { Button } from '../ui/Button';
+import { SocialLinks } from '../ui/SocialLinks';
 
 export const HeroSection = () => {
   return (
@@ -21,6 +22,7 @@ export const HeroSection = () => {
               Contact Me
             </Button>
           </div>
+          <SocialLinks />
         </div>
         <div className="bg-slate-200 rounded-lg aspect-square flex items-center justify-center text-slate-500">
           {/* Placeholder for Profile Image */}
