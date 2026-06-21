@@ -9,8 +9,21 @@ import { ContactSection } from '@/components/layout/ContactSection';
 import { Footer } from '@/components/layout/Footer';
 
 export default function Home() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Your Name',
+    jobTitle: 'Frontend Engineer',
+    url: 'https://your-portfolio-url.com',
+    sameAs: ['https://linkedin.com/in/yourprofile', 'https://github.com/yourusername'],
+  };
+
   return (
     <main className="min-h-screen" id="top">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Navbar />
       <div className="pt-16"> {/* Add padding top to account for fixed Navbar */}
         <AboutSection />
