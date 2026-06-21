@@ -19,16 +19,25 @@ export const Navbar = () => {
   const pathname = usePathname();
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Handle focus trap / closing on escape
+  // Handle focus trap / closing on escape / body scroll lock
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setIsOpen(false);
     };
+
     if (isOpen) {
+      document.body.style.overflow = 'hidden';
       document.addEventListener('keydown', handleEscape);
-      menuRef.current?.querySelector('a')?.focus();
+      // Small timeout to ensure menu is rendered before focusing
+      setTimeout(() => menuRef.current?.querySelector('a')?.focus(), 50);
+    } else {
+      document.body.style.overflow = '';
     }
-    return () => document.removeEventListener('keydown', handleEscape);
+    
+    return () => {
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleEscape);
+    };
   }, [isOpen]);
 
   return (
@@ -74,12 +83,21 @@ export const Navbar = () => {
         </div>
       </Container>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Backdrop */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden" 
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Mobile Menu Content */}
       {isOpen && (
         <div 
           id="mobile-menu"
           ref={menuRef}
-          className="absolute top-16 left-0 w-full md:hidden bg-white border-t p-4 flex flex-col space-y-4 shadow-lg"
+          className="fixed top-16 left-0 w-full z-50 md:hidden bg-white border-t p-4 flex flex-col space-y-4 shadow-lg"
         >
           {navLinks.map((link) => (
             <a
