@@ -1,7 +1,6 @@
 import React from 'react';
-import { Container } from '../ui/Container';
 import { Section } from '../ui/Section';
-import Link from 'next/link';
+import { Button } from '../ui/Button';
 
 export const HeroSection = () => {
   return (
@@ -15,18 +14,12 @@ export const HeroSection = () => {
             I am a dedicated frontend engineer specializing in building responsive, accessible, and high-performance web applications.
           </p>
           <div className="flex flex-wrap gap-4">
-            <Link 
-              href="/#projects"
-              className="bg-primary text-white px-6 py-3 rounded font-medium hover:bg-blue-700 transition-colors"
-            >
+            <Button href="/#projects" variant="primary">
               View Projects
-            </Link>
-            <Link 
-              href="/#contact"
-              className="bg-white border border-primary text-primary px-6 py-3 rounded font-medium hover:bg-slate-50 transition-colors"
-            >
+            </Button>
+            <Button href="/#contact" variant="secondary">
               Contact Me
-            </Link>
+            </Button>
           </div>
         </div>
         <div className="bg-slate-200 rounded-lg aspect-square flex items-center justify-center text-slate-500">

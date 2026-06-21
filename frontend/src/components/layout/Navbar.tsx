@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import { clsx } from 'clsx';
 import { Container } from '../ui/Container';
+import { Button } from '../ui/Button';
 
 const navLinks = [
   { name: 'About', href: '/#about' },
@@ -67,27 +68,25 @@ export const Navbar = () => {
         
         {/* Desktop Nav */}
         <div className="hidden md:flex space-x-8 items-center" role="list">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className={clsx(
-                "text-secondary hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded",
-                activeSection === link.href.split('#')[1] && "text-primary font-semibold"
-              )}
-            >
-              {link.name}
-            </a>
-          ))}
-          <Link 
-            href="/resume"
-            className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        {navLinks.map((link) => (
+          <a
+            key={link.name}
+            href={link.href}
+            className={clsx(
+              "text-secondary hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded",
+              activeSection === link.href.split('#')[1] && "text-primary font-semibold"
+            )}
           >
-            Resume
-          </Link>
+            {link.name}
+          </a>
+        ))}
+        <Button href="/resume" variant="primary">
+          Resume
+        </Button>
         </div>
 
         {/* Mobile Toggle */}
+
         <div className="md:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -130,13 +129,9 @@ export const Navbar = () => {
               {link.name}
             </a>
           ))}
-          <Link 
-            href="/resume"
-            onClick={() => setIsOpen(false)}
-            className="bg-primary text-white px-4 py-2 rounded text-center focus:outline-none focus:ring-2 focus:ring-primary"
-          >
+          <Button href="/resume" onClick={() => setIsOpen(false)} variant="primary">
             Resume
-          </Link>
+          </Button>
         </div>
       )}
     </nav>
