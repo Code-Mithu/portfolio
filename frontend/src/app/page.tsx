@@ -6,10 +6,11 @@ import { ExperienceSection } from '@/components/layout/ExperienceSection';
 import { EducationSection } from '@/components/layout/EducationSection';
 import { ResumeSection } from '@/components/layout/ResumeSection';
 import { ContactSection } from '@/components/layout/ContactSection';
+import { Footer } from '@/components/layout/Footer';
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen" id="top">
       <Navbar />
       <div className="pt-16"> {/* Add padding top to account for fixed Navbar */}
         <AboutSection />
@@ -20,6 +21,7 @@ export default function Home() {
         <ResumeSection />
         <ContactSection />
       </div>
+      <Footer />
     </main>
   );
 }
