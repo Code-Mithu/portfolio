@@ -1,4 +1,5 @@
 import { Navbar } from '@/components/layout/Navbar';
+import { HeroSection } from '@/components/layout/HeroSection';
 import { AboutSection } from '@/components/layout/AboutSection';
 import { SkillsSection } from '@/components/layout/SkillsSection';
 import { ProjectsSection } from '@/components/layout/ProjectsSection';
@@ -26,6 +27,7 @@ export default function Home() {
       />
       <Navbar />
       <div className="pt-16"> {/* Add padding top to account for fixed Navbar */}
+        <HeroSection />
         <AboutSection />
         <SkillsSection />
         <ProjectsSection />
