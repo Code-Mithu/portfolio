@@ -6,30 +6,30 @@ import { AcademicAchievements, AcademicAchievement as AcademicAchievementType } 
 const education: EducationEntryType[] = [
   {
     id: '1',
-    institution: 'University of Technology',
-    degree: 'Master of Science in Software Engineering',
+    institution: 'University of Dhaka',
+    degree: 'Master of Science in Computer Science',
     duration: '2020 - 2022',
-    location: 'San Francisco, CA',
-    gpa: '3.9/4.0',
-    description: 'Advanced study in software engineering principles, distributed systems, and machine learning.',
+    location: 'Dhaka, Bangladesh',
+    gpa: '3.8/4.0',
+    description: 'Advanced study in software engineering, distributed systems, and database management with focus on financial technology applications.',
     honors: [
       'Dean\'s List - All Semesters',
       'Outstanding Graduate Award',
-      'Published Research Paper on Distributed Systems',
+      'Research Assistant in FinTech Lab',
     ],
   },
   {
     id: '2',
-    institution: 'State University',
-    degree: 'Bachelor of Science in Computer Science',
+    institution: 'Bangladesh University of Engineering and Technology',
+    degree: 'Bachelor of Science in Computer Science & Engineering',
     duration: '2016 - 2020',
-    location: 'New York, NY',
-    gpa: '3.8/4.0',
-    description: 'Comprehensive curriculum covering algorithms, data structures, software engineering, and computer systems.',
+    location: 'Dhaka, Bangladesh',
+    gpa: '3.7/4.0',
+    description: 'Comprehensive curriculum covering algorithms, data structures, software engineering, and financial systems.',
     honors: [
-      'Cum Laude',
+      'Merit Scholarship',
       'Computer Science Department Award',
-      'Led Student Programming Contest Team',
+      'Led Programming Contest Team',
     ],
   },
 ];
@@ -55,34 +55,28 @@ const academicAchievements: AcademicAchievementType[] = [
     badge: 'Professional',
   },
   {
+    id: 'cert3',
+    title: 'Professional Scrum Master I',
+    issuer: 'Scrum.org',
+    date: '2021',
+    type: 'certification',
+    description: 'Scrum framework certification for agile project management.',
+    credentialUrl: 'https://www.scrum.org/professional-scrum-master',
+    badge: 'Agile',
+  },
+  {
     id: 'award1',
     title: 'Outstanding Graduate Award',
     issuer: 'University of Technology',
-    date: '2022',
+    date: '2020',
     type: 'award',
-    description: 'Awarded for exceptional academic performance and leadership in graduate studies.',
-  },
-  {
-    id: 'award2',
-    title: 'Dean\'s Research Fellowship',
-    issuer: 'University of Technology',
-    date: '2021',
-    type: 'award',
-    description: 'Competitive fellowship for outstanding research in distributed systems.',
+    description: 'Awarded for exceptional academic performance and leadership.',
   },
   {
     id: 'highlight1',
-    title: 'Best Paper Award',
-    issuer: 'ACM Symposium',
-    date: '2021',
-    type: 'highlight',
-    description: 'Recognized for excellence in research on microservices architecture.',
-  },
-  {
-    id: 'highlight2',
     title: 'Hackathon Winner',
     issuer: 'TechCrunch Disrupt',
-    date: '2020',
+    date: '2019',
     type: 'highlight',
     description: 'First place in national hackathon for building innovative AI solutions.',
   },
@@ -100,9 +94,11 @@ const timelineItems: TimelineItem[] = education.map((edu) => ({
 
 export const EducationSection = () => {
   return (
-    <section id="education" className="py-16 bg-slate-50">
+    <section id="education" className="py-16 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold text-primary mb-12 text-center">Education</h2>
+        <h2 className="text-3xl font-extrabold text-foreground mb-6 border-b border-border pb-2 uppercase tracking-wider">
+          Education & Certifications
+        </h2>
         <Timeline items={timelineItems} />
         
         <div className="mt-16">

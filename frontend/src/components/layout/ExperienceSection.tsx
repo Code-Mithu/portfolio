@@ -1,62 +1,72 @@
 import React from 'react';
-import { Timeline, TimelineItem } from './Timeline';
-import { ExperienceEntry, ExperienceEntry as ExperienceEntryType } from './ExperienceEntry';
 
-const experiences: ExperienceEntryType[] = [
+const experiences = [
   {
-    id: '1',
-    company: 'Tech Solutions Inc.',
-    role: 'Senior Frontend Engineer',
-    duration: '2022 - Present',
-    location: 'San Francisco, CA',
+    company: 'Financial Services Corporation',
+    role: 'Finance & Operations Executive',
+    duration: '2021 - Present',
+    location: 'Dhaka, Bangladesh',
+    metrics: ['2.9+ years', 'L/C Management', 'Tax Compliance'],
     responsibilities: [
-      'Led the development of a complex dashboard application.',
-      'Optimized performance by 30% through code splitting and image optimization.',
-      'Mentored junior developers and conducted code reviews.',
-    ],
-    achievements: [
-      'Increased page load speed by 40%',
-      'Led a team of 5 developers',
-      'Shipped 3 major product releases',
-    ],
+      'Manage Letter of Credit (L/C) openings and ensure compliance with NBR (National Board of Revenue) regulations for international trade operations.',
+      'Maintain and update Mushak registers for VAT compliance, ensuring accurate tax documentation and reporting.',
+      'Oversee banking operations, coordinate with financial institutions, and manage treasury functions for optimal cash flow.',
+      'Implement digital solutions for financial documentation, reducing manual paperwork by 40% and improving operational efficiency.',
+      'Collaborate with cross-functional teams to integrate financial systems with IT infrastructure, enabling automated reporting and compliance monitoring.',
+    ]
   },
   {
-    id: '2',
-    company: 'Creative Agency',
-    role: 'Frontend Developer',
-    duration: '2020 - 2022',
-    location: 'New York, NY',
+    company: 'Freelance Software Development',
+    role: 'Full-Stack Developer',
+    duration: '2020 - Present',
+    location: 'Remote',
+    metrics: ['Web Development', 'System Integration', 'Automation'],
     responsibilities: [
-      'Built responsive websites for diverse clients using React and Tailwind CSS.',
-      'Collaborated with designers to implement pixel-perfect UIs.',
-      'Integrated RESTful APIs for dynamic content rendering.',
-    ],
-    achievements: [
-      'Delivered 15+ client projects on time',
-      'Improved development workflow by 25%',
-      'Received Client Excellence Award 2021',
-    ],
+      'Develop full-stack web applications using modern technologies including React, Next.js, Django, and PostgreSQL.',
+      'Build automated financial tools and dashboards for clients, integrating with banking APIs and payment gateways.',
+      'Create tax calculation and compliance software that streamlines VAT and income tax processes for small businesses.',
+      'Implement responsive designs and accessible user interfaces, following WCAG guidelines for optimal user experience.',
+      'Deploy and manage applications using Docker and cloud services, ensuring high availability and security.',
+    ]
   },
 ];
 
-// Convert ExperienceEntry to TimelineItem for compatibility with Timeline component
-const timelineItems: TimelineItem[] = experiences.map((exp) => ({
-  id: exp.id,
-  title: exp.role,
-  subtitle: exp.company,
-  date: exp.duration,
-  content: (
-    <ExperienceEntry entry={{ ...exp, role: '', company: '', duration: '' }} showAchievements={true} />
-  ),
-  icon: null,
-}));
-
 export const ExperienceSection = () => {
   return (
-    <section id="experience" className="py-16 bg-white">
+    <section id="experience" className="py-16 bg-surface">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold text-primary mb-12 text-center">Work Experience</h2>
-        <Timeline items={timelineItems} />
+        <h2 className="text-3xl font-extrabold text-foreground mb-6 border-b border-border pb-2 uppercase tracking-wider">
+          Professional Experience
+        </h2>
+        <div className="space-y-12">
+          {experiences.map((exp) => (
+            <div key={exp.company} className="pb-8 border-b border-dashed border-border last:border-0 last:pb-0">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-baseline mb-4">
+                <div>
+                  <h3 className="text-xl font-bold text-foreground">{exp.role}</h3>
+                  <p className="text-secondary font-medium">{exp.company}</p>
+                  <p className="text-muted text-sm">{exp.location}</p>
+                </div>
+                <span className="text-muted text-sm mt-2 md:mt-0">{exp.duration}</span>
+              </div>
+              
+              <div className="flex flex-wrap gap-2 mb-4">
+                {exp.metrics.map((metric) => (
+                  <span 
+                    key={metric} 
+                    className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary"
+                  >
+                    {metric}
+                  </span>
+                ))}
+              </div>
+              
+              <ul className="list-disc list-inside text-secondary space-y-2">
+                {exp.responsibilities.map(r => <li key={r} className="leading-relaxed">{r}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

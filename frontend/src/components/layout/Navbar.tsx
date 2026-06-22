@@ -1,141 +1,107 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
-import { usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/projects", label: "Projects" },
-  { href: "/contact", label: "Contact" },
+  { href: "#home", label: "Home" },
+  { href: "#experience", label: "Experience" },
+  { href: "#education", label: "Education" },
+  { href: "#skills", label: "Skills" },
+  { href: "#projects", label: "Projects" },
+  { href: "#blog", label: "Blog" },
+  { href: "#contact", label: "Contact" },
 ];
 
 export default function Navbar() {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const pathname = usePathname();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // -------------------------------------------------
-  // Breakpoint detection (md = 768px)
-  // -------------------------------------------------
   useEffect(() => {
-    const media = window.matchMedia("(min-width: 768px)");
-    const handler = (e: MediaQueryListEvent) => {
-      setIsDesktop(e.matches);
-      if (e.matches) setMobileOpen(false); // close mobile menu when switching to desktop
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
     };
-    setIsDesktop(media.matches);
-    media.addEventListener("change", handler);
-    return () => media.removeEventListener("change", handler);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // -------------------------------------------------
-  // Body scroll lock when mobile menu is open
-  // -------------------------------------------------
-  useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [mobileOpen]);
-
-  // -------------------------------------------------
-  // Desktop navbar shrink / hide on scroll
-  // -------------------------------------------------
-  useEffect(() => {
-    if (!isDesktop) return;
-    const onScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [isDesktop]);
-
-  const toggleMobile = () => setMobileOpen((prev) => !prev);
-
   return (
-    <>
-      {/* Desktop glass navbar */}
-      <nav
-        className={`
-          fixed top-4 left-1/2 -translate-x-1/2
-          w-[calc(100%-2rem)] max-w-5xl
-          bg-glass border border-border rounded-xl
-          backdrop-blur-xl transition-all duration-300
-          ${scrolled ? "-translate-y-2 h-12" : "h-16"}
-          z-40
-        `}
-        aria-label="Main navigation"
-      >
-        <div className="h-full flex items-center justify-between px-4">
-          <Link href="/" className="text-xl font-semibold text-surface">
-            MyPortfolio
+    <nav
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        isScrolled 
+          ? "bg-background/95 backdrop-blur-md shadow-lg border-b border-border py-3" 
+          : "bg-background border-b border-border py-4"
+      }`}
+      aria-label="Main navigation"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between">
+          {/* Logo/Brand */}
+          <Link 
+            href="/" 
+            className="text-xl font-extrabold text-foreground hover:text-primary transition-colors"
+          >
+            Mithu Kumar Das
           </Link>
 
-          {/* Desktop links */}
-          <ul className="hidden md:flex space-x-6 text-surface">
+          {/* Desktop Navigation */}
+          <ul className="hidden md:flex items-center gap-1">
             {NAV_ITEMS.map((item) => (
               <li key={item.href}>
-                <Link
+                <a
                   href={item.href}
-                  className={`
-                    hover:underline underline-offset-4
-                    ${pathname === item.href ? "font-bold" : ""}
-                  `}
+                  className="px-4 py-2 text-sm font-medium text-secondary hover:text-foreground hover:bg-surface rounded-lg transition-all duration-200"
                 >
                   {item.label}
-                </Link>
+                </a>
               </li>
             ))}
           </ul>
 
-          {/* Mobile toggle – hidden on desktop */}
+          {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 text-surface"
-            onClick={toggleMobile}
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden p-2 text-foreground hover:bg-surface rounded-lg transition-colors"
+            aria-label="Toggle mobile menu"
+            aria-expanded={isMobileMenuOpen}
           >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              {isMobileMenuOpen ? (
+                <path d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
           </button>
         </div>
-      </nav>
 
-      {/* Mobile fullscreen overlay */}
-      {mobileOpen && (
-        <div
-          className={`
-            fixed inset-0 z-50 flex flex-col items-center justify-center
-            bg-black/70 backdrop-blur-lg
-          `}
-          role="dialog"
-          aria-modal="true"
-        >
-          <button
-            className="absolute top-4 right-4 p-2 text-white"
-            onClick={toggleMobile}
-            aria-label="Close menu"
-          >
-            <X size={28} />
-          </button>
-
-          <ul className="space-y-6 text-2xl font-medium text-white">
-            {NAV_ITEMS.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="hover:underline underline-offset-4"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </>
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden mt-4 pb-4 border-t border-border pt-4">
+            <ul className="flex flex-col gap-2">
+              {NAV_ITEMS.map((item) => (
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    className="block px-4 py-3 text-sm font-medium text-secondary hover:text-foreground hover:bg-surface rounded-lg transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </nav>
   );
 }

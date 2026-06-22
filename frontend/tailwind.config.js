@@ -1,21 +1,19 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: "class", // we toggle the `dark` class on <html>
-  content: [
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "./app/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./src/**/*.{js,ts,jsx,tsx}", "./app/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
-        // Core palette
-        dark: "#0A0A0B",
-        surface: "#111827",
-        glass: "rgba(255,255,255,0.04)",
-        border: "rgba(255,255,255,0.08)",
-        // Aliases for convenience
-        background: "var(--color-surface)",
-        foreground: "var(--color-surface)",
+        muted: "#475569",
+        // Core palette – match the reference design
+        primary: "#0ea5e9", // teal‑600
+        secondary: "#64748b", // slate‑500
+        background: "#ffffff", // light background
+        foreground: "#0f172a", // dark text
+        surface: "#f8fafc", // page surface (gray‑50)
+        accent: "#f59e0b", // amber‑500 for highlights
+        border: "#e2e8f0", // light border (slate‑200)
       },
       zIndex: {
         40: "40", // desktop navbar

@@ -1,34 +1,43 @@
 import React from 'react';
-import { Section } from '../ui/Section';
 import { Button } from '../ui/Button';
 import { SocialLinks } from '../ui/SocialLinks';
 
 export const HeroSection = () => {
   return (
-    <Section id="home" className="bg-white">
-      <div className="grid md:grid-cols-2 gap-12 items-center">
-        <div className="space-y-6">
-          <h1 className="text-4xl md:text-5xl font-bold text-primary leading-tight">
-            Building Digital Experiences with Precision.
+    <section id="home" className="bg-background py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-foreground tracking-tight mb-6">
+            Multidisciplinary Professional & Full-Stack Developer
           </h1>
-          <p className="text-lg text-secondary leading-relaxed">
-            I am a dedicated frontend engineer specializing in building responsive, accessible, and high-performance web applications.
+          <p className="text-xl text-secondary leading-relaxed mb-8">
+            Bridging the gap between corporate finance operations and advanced software engineering. 
+            Specializing in financial systems, tax compliance automation, and modern web development 
+            with expertise in both administrative processes and cutting-edge technology.
           </p>
+          <div className="flex flex-wrap gap-4 mb-8">
+            <div className="flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full">
+              <span className="text-primary font-semibold">2.9+ years</span>
+              <span className="text-secondary text-sm">Professional Experience</span>
+            </div>
+            <div className="flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full">
+              <span className="text-primary font-semibold">Finance + Tech</span>
+              <span className="text-secondary text-sm">Dual Expertise</span>
+            </div>
+          </div>
           <div className="flex flex-wrap gap-4">
-            <Button href="/#projects" variant="primary">
+            <Button href="#contact" variant="primary">
+              Get In Touch
+            </Button>
+            <Button href="#projects" variant="secondary">
               View Projects
             </Button>
-            <Button href="/#contact" variant="secondary">
-              Contact Me
-            </Button>
           </div>
-          <SocialLinks />
-        </div>
-        <div className="bg-slate-200 rounded-lg aspect-square flex items-center justify-center text-slate-500">
-          {/* Placeholder for Profile Image */}
-          <span className="text-lg">Profile Image</span>
+          <div className="mt-8">
+            <SocialLinks />
+          </div>
         </div>
       </div>
-    </Section>
+    </section>
   );
 };

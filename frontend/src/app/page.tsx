@@ -1,4 +1,3 @@
-import Navbar from '@/components/layout/Navbar';
 import { HeroSection } from '@/components/layout/HeroSection';
 import dynamic from 'next/dynamic';
 import { Footer } from '@/components/layout/Footer';
@@ -8,6 +7,7 @@ const SkillsSection = dynamic(() => import('@/components/layout/SkillsSection').
 const ProjectsSection = dynamic(() => import('@/components/layout/ProjectsSection').then((mod) => mod.ProjectsSection));
 const ExperienceSection = dynamic(() => import('@/components/layout/ExperienceSection').then((mod) => mod.ExperienceSection));
 const EducationSection = dynamic(() => import('@/components/layout/EducationSection').then((mod) => mod.EducationSection));
+const BlogSection = dynamic(() => import('@/components/layout/BlogSection').then((mod) => ({ default: mod.BlogSection })));
 const ResumeSection = dynamic(() => import('@/components/layout/ResumeSection').then((mod) => mod.ResumeSection));
 const ContactSection = dynamic(() => import('@/components/layout/ContactSection').then((mod) => mod.ContactSection));
 
@@ -17,18 +17,30 @@ export default function Home() {
     '@graph': [
       {
         '@type': 'WebSite',
-        'name': 'Your Name | Portfolio',
-        'url': 'https://your-portfolio-url.com',
+        'name': 'Mithu Kumar Das | Portfolio',
+        'url': 'https://mithukumardas.com',
       },
       {
         '@type': 'Person',
-        'name': 'Your Name',
-        'jobTitle': 'Frontend Engineer',
-        'url': 'https://your-portfolio-url.com',
+        'name': 'Mithu Kumar Das',
+        'jobTitle': 'Finance & Technology Professional',
+        'description': 'Multidisciplinary professional bridging corporate finance operations and full-stack development with expertise in L/C management, VAT compliance, and modern web technologies.',
+        'url': 'https://mithukumardas.com',
         'sameAs': [
-          'https://linkedin.com/in/yourprofile',
-          'https://github.com/yourusername',
+          'https://linkedin.com/in/mithukumardas',
+          'https://github.com/Code-Mithu',
         ],
+        'knowsAbout': [
+          'L/C Management',
+          'VAT Compliance',
+          'Financial Operations',
+          'React',
+          'Next.js',
+          'Python',
+          'Django',
+          'Full-Stack Development',
+          'Tax Automation'
+        ]
       },
     ],
   };
@@ -39,14 +51,14 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Navbar />
       <div className="pt-16"> {/* Add padding top to account for fixed Navbar */}
         <HeroSection />
         <AboutSection />
+        <ExperienceSection />
         <SkillsSection />
         <ProjectsSection />
-        <ExperienceSection />
         <EducationSection />
+        <BlogSection />
         <ResumeSection />
         <ContactSection />
       </div>

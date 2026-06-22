@@ -9,19 +9,25 @@ const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
   title: {
-    default: "My Professional Portfolio | Frontend Engineer",
-    template: "%s | My Professional Portfolio",
+    default: "Mithu Kumar Das | Finance & Technology Professional",
+    template: "%s | Mithu Kumar Das",
   },
   description:
-    "Portfolio of a dedicated frontend engineer specializing in React, Next.js, and creating accessible, responsive web experiences.",
+    "Portfolio of a multidisciplinary professional bridging corporate finance operations and full-stack development. Expertise in L/C management, VAT compliance, financial systems, and modern web technologies including React, Next.js, and Python.",
   keywords: [
-    "Frontend Engineer",
+    "Finance Professional",
+    "Full-Stack Developer",
+    "L/C Management",
+    "VAT Compliance",
+    "Financial Operations",
     "React",
     "Next.js",
+    "Python",
+    "Django",
+    "Tax Automation",
     "Portfolio",
-    "Web Developer",
   ],
-  authors: [{ name: "Your Name" }],
+  authors: [{ name: "Mithu Kumar Das" }],
 };
 
 export default function RootLayout({
