@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
   { href: "/", label: "Home" },
@@ -16,7 +16,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const router = useRouter();
+  const pathname = usePathname();
 
   // -------------------------------------------------
   // Breakpoint detection (md = 768px)
@@ -83,7 +83,7 @@ export default function Navbar() {
                   href={item.href}
                   className={`
                     hover:underline underline-offset-4
-                    ${router.pathname === item.href ? "font-bold" : ""}
+                    ${pathname === item.href ? "font-bold" : ""}
                   `}
                 >
                   {item.label}
