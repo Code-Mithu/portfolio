@@ -264,3 +264,102 @@ describe('AcademicAchievements Component', () => {
     expect(greenCard).toBeDefined();
   });
 });
+
+describe('AcademicAchievementCard - Publication Type', () => {
+  const mockPublication: AcademicAchievementType = {
+    id: '4',
+    title: 'Distributed Systems Architecture',
+    issuer: 'IEEE Conference',
+    date: '2023-06',
+    type: 'publication',
+    description: 'Published research on scalable distributed systems.',
+    credentialUrl: 'https://doi.org/example',
+    badge: 'Peer Reviewed',
+  };
+
+  it('renders publication type with correct border color', () => {
+    const { container } = render(<AcademicAchievementCard achievement={mockPublication} />);
+    const card = container.firstChild;
+    expect(card).toHaveClass('border-purple-200');
+  });
+
+  it('renders publication type with correct icon container colors', () => {
+    const { container } = render(<AcademicAchievementCard achievement={mockPublication} />);
+    const iconContainer = container.querySelector('.w-12.h-12');
+    expect(iconContainer).toHaveClass('bg-purple-50', 'border-purple-200', 'text-purple-600');
+  });
+
+  it('renders publication badge with correct colors', () => {
+    render(<AcademicAchievementCard achievement={mockPublication} />);
+    const badge = screen.getByText('Peer Reviewed');
+    expect(badge).toHaveClass('bg-purple-100', 'text-purple-700');
+  });
+
+  it('renders publication SVG icon (book icon)', () => {
+    const { container } = render(<AcademicAchievementCard achievement={mockPublication} />);
+    const svg = container.querySelector('.w-12.h-12 svg');
+    expect(svg).not.toBeNull();
+    expect(svg).toHaveClass('w-6', 'h-6');
+  });
+
+  it('renders all publication content', () => {
+    render(<AcademicAchievementCard achievement={mockPublication} />);
+    expect(screen.getByText('Distributed Systems Architecture')).toBeDefined();
+    expect(screen.getByText('IEEE Conference')).toBeDefined();
+    expect(screen.getByText('2023-06')).toBeDefined();
+    expect(screen.getByText(/Published research on scalable/)).toBeDefined();
+  });
+});
+
+describe('AcademicAchievementCard - Default/Unknown Type', () => {
+  const mockUnknownType: AcademicAchievementType = {
+    id: '5',
+    title: 'Unknown Achievement',
+    issuer: 'Some Organization',
+    date: '2020',
+    type: 'unknown_type' as AchievementType,
+    description: 'An achievement with unknown type.',
+  };
+
+  it('renders default colors for unknown achievement type', () => {
+    const { container } = render(<AcademicAchievementCard achievement={mockUnknownType} />);
+    const card = container.firstChild;
+    expect(card).toHaveClass('border-slate-200');
+  });
+
+  it('renders default icon container colors for unknown type', () => {
+    const { container } = render(<AcademicAchievementCard achievement={mockUnknownType} />);
+    const iconContainer = container.querySelector('.w-12.h-12');
+    expect(iconContainer).toHaveClass('bg-slate-50', 'border-slate-200', 'text-slate-600');
+  });
+
+  it('renders default SVG icon for unknown type', () => {
+    const { container } = render(<AcademicAchievementCard achievement={mockUnknownType} />);
+    const svg = container.querySelector('.w-12.h-12 svg');
+    expect(svg).not.toBeNull();
+    expect(svg).toHaveClass('w-6', 'h-6');
+  });
+
+  it('still renders all content for unknown type', () => {
+    render(<AcademicAchievementCard achievement={mockUnknownType} />);
+    expect(screen.getByText('Unknown Achievement')).toBeDefined();
+    expect(screen.getByText('Some Organization')).toBeDefined();
+    expect(screen.getByText('2020')).toBeDefined();
+    expect(screen.getByText(/An achievement with unknown type/)).toBeDefined();
+  });
+});
+
+describe('AcademicAchievementCard - Custom Icon', () => {
+  it('renders custom icon instead of default when provided', () => {
+    const customIcon = <span data-testid="custom-icon">★</span>;
+    const achievement: AcademicAchievementType = {
+      id: '6',
+      title: 'Custom Icon Achievement',
+      type: 'certification',
+      icon: customIcon,
+    };
+
+    render(<AcademicAchievementCard achievement={achievement} />);
+    expect(screen.getByTestId('custom-icon')).toBeDefined();
+  });
+});
