@@ -11,6 +11,9 @@ const EducationSection = dynamic(() => import('@/components/layout/EducationSect
 const ResumeSection = dynamic(() => import('@/components/layout/ResumeSection').then((mod) => mod.ResumeSection));
 const ContactSection = dynamic(() => import('@/components/layout/ContactSection').then((mod) => mod.ContactSection));
 
+function sanitizeJsonLd(data: Record<string, unknown>): string {
+  return JSON.stringify(data).replace(/</g, '\\u003c');
+}
 export default function Home() {
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -37,7 +40,7 @@ export default function Home() {
     <main className="min-h-screen" id="top">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: sanitizeJsonLd(jsonLd) }}
       />
       <Navbar />
       <div className="pt-16"> {/* Add padding top to account for fixed Navbar */}
