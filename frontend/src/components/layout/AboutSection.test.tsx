@@ -7,6 +7,6 @@ describe('AboutSection Component', () => {
     render(<AboutSection />);
     expect(screen.getByText('About Me')).toBeDefined();
     expect(screen.getByText('Professional Summary')).toBeDefined();
-    expect(screen.getByText('Key Highlights')).toBeDefined();
+    expect(screen.getByText('Key Achievements')).toBeDefined();
   });
 });
