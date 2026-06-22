@@ -9,7 +9,7 @@ Global metadata (Title, Description, Open Graph, Twitter Cards, Canonical URLs) 
 Structured data (JSON-LD) is injected directly into page components, as seen in `frontend/src/app/page.tsx`, to improve search engine understanding of the page content.
 
 ## 3. SEO-Critical Files
-- `frontend/src/app/robots.ts`: Defines search engine crawler rules.
+- `frontend/src/app/robots.ts`: Defines search engine crawler rules. Update this file to modify allowed/disallowed paths.
 - `frontend/src/app/sitemap.ts`: Provides search engines with a map of the site. To add new pages, update the `routes` array within the `sitemap()` function.
 
 ## 4. Best Practices & Validation
@@ -21,3 +21,4 @@ Structured data (JSON-LD) is injected directly into page components, as seen in 
   - Use [Open Graph Debugger](https://developers.facebook.com/tools/debug/) for OG tags.
   - Run Lighthouse audit in Chrome DevTools to validate SEO and accessibility scores.
   - Validate the `sitemap.xml` by visiting `/sitemap.xml` in your browser.
+  - Validate the `robots.txt` by visiting `/robots.txt` in your browser.
