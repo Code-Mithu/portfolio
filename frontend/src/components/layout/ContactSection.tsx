@@ -3,22 +3,39 @@
 import React, { useState } from 'react';
 import { ContactForm } from './ContactForm';
 import { ContactFormData } from '../../utils/validation';
+import { submitContactForm } from '../../services/contactSubmission';
+
+export type SubmissionStatus = 'idle' | 'submitting' | 'success' | 'error';
 
 export const ContactSection = () => {
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<SubmissionStatus>('idle');
+  const [statusMessage, setStatusMessage] = useState('');
   const [key, setKey] = useState(0);
 
   const handleFormSubmit = async (data: ContactFormData) => {
     setStatus('submitting');
+    setStatusMessage('');
+
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setStatus('success');
-      // Reset form by incrementing key to force re-render
-      setKey(prev => prev + 1);
-    } catch {
+      const result = await submitContactForm(data);
+      
+      if (result.success) {
+        setStatus('success');
+        setStatusMessage(result.message);
+        // Reset form by incrementing key to force re-render
+        setKey(prev => prev + 1);
+      } else {
+        throw new Error(result.message);
+      }
+    } catch (error) {
       setStatus('error');
+      setStatusMessage(error instanceof Error ? error.message : 'Failed to send message. Please try again.');
     }
+  };
+
+  const handleRetry = () => {
+    setStatus('idle');
+    setStatusMessage('');
   };
 
   return (
@@ -28,15 +45,43 @@ export const ContactSection = () => {
         <div className="grid md:grid-cols-2 gap-12">
           {/* Form */}
           <div className="bg-white p-8 rounded-lg shadow-sm border border-slate-100">
-            <ContactForm key={key} onSubmit={handleFormSubmit} isLoading={status === 'submitting'} />
-            {status === 'success' && (
-              <div role="alert" aria-live="polite" className="mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-700 text-center">
-                Message sent successfully!
+            {status === 'idle' || status === 'submitting' ? (
+              <ContactForm 
+                key={key} 
+                onSubmit={handleFormSubmit} 
+                isLoading={status === 'submitting'} 
+              />
+            ) : status === 'success' ? (
+              <div className="text-center py-12">
+                <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-emerald-600 mb-2">Message Sent!</h3>
+                <p className="text-secondary mb-6">{statusMessage}</p>
+                <button
+                  onClick={handleRetry}
+                  className="text-primary font-semibold hover:underline"
+                >
+                  Send another message
+                </button>
               </div>
-            )}
-            {status === 'error' && (
-              <div role="alert" aria-live="polite" className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-center">
-                Failed to send message. Please try again.
+            ) : (
+              <div className="text-center py-12">
+                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-red-600 mb-2">Submission Failed</h3>
+                <p className="text-secondary mb-6">{statusMessage}</p>
+                <button
+                  onClick={handleRetry}
+                  className="bg-primary text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                >
+                  Try Again
+                </button>
               </div>
             )}
           </div>
