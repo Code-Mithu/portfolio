@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'media',
   content: [
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,9 +11,14 @@ module.exports = {
         sans: ['Inter', 'sans-serif'],
       },
       colors: {
-        primary: '#2563EB',
-        secondary: '#64748B',
-        accent: '#F59E0B',
+        background: 'var(--background)',
+        surface: 'var(--surface)',
+        elevated: 'var(--elevated)',
+        primary: 'var(--primary)',
+        secondary: 'var(--secondary)',
+        foreground: 'var(--text-primary)',
+        muted: 'var(--text-secondary)',
+        border: 'var(--border)',
       },
     },
   },
