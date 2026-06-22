@@ -5,8 +5,8 @@ This project utilizes Next.js App Router for robust SEO management.
 ## 1. Global Metadata
 Global metadata (Title, Description, Open Graph, Twitter Cards, Canonical URLs) is configured in `frontend/src/app/layout.tsx` using the `metadata` object. Ensure `metadataBase` is set to the production URL.
 
-## 2. Dynamic Content & JSON-LD
-Structured data (JSON-LD) is injected directly into page components, as seen in `frontend/src/app/page.tsx`, to improve search engine understanding of the page content.
+## 2. Structured Data (JSON-LD)
+Schema.org structured data (JSON-LD) is injected into page components using a `@graph` structure in `frontend/src/app/page.tsx`. This includes `Person` and `WebSite` schemas to improve search engine understanding of the entity and site structure.
 
 ## 3. SEO-Critical Files
 - `frontend/src/app/robots.ts`: Defines search engine crawler rules. Update this file to modify allowed/disallowed paths.

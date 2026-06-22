@@ -12,11 +12,23 @@ import { Footer } from '@/components/layout/Footer';
 export default function Home() {
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: 'Your Name',
-    jobTitle: 'Frontend Engineer',
-    url: 'https://your-portfolio-url.com',
-    sameAs: ['https://linkedin.com/in/yourprofile', 'https://github.com/yourusername'],
+    '@graph': [
+      {
+        '@type': 'WebSite',
+        'name': 'Your Name | Portfolio',
+        'url': 'https://your-portfolio-url.com',
+      },
+      {
+        '@type': 'Person',
+        'name': 'Your Name',
+        'jobTitle': 'Frontend Engineer',
+        'url': 'https://your-portfolio-url.com',
+        'sameAs': [
+          'https://linkedin.com/in/yourprofile',
+          'https://github.com/yourusername',
+        ],
+      },
+    ],
   };
 
   return (
