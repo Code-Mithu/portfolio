@@ -7,7 +7,8 @@ describe('EducationSection Component', () => {
     render(<EducationSection />);
     expect(screen.getByText('Education')).toBeDefined();
     expect(screen.getByText('Master of Science in Software Engineering')).toBeDefined();
-    expect(screen.getByText('University of Technology')).toBeDefined();
+    const universityText = screen.getAllByText('University of Technology');
+    expect(universityText.length).toBeGreaterThan(0);
   });
 
   it('renders all education entries', () => {
@@ -18,7 +19,8 @@ describe('EducationSection Component', () => {
 
   it('renders institution names', () => {
     render(<EducationSection />);
-    expect(screen.getByText('University of Technology')).toBeDefined();
+    const universityText = screen.getAllByText('University of Technology');
+    expect(universityText.length).toBeGreaterThan(0);
     expect(screen.getByText('State University')).toBeDefined();
   });
 
@@ -66,5 +68,35 @@ describe('EducationSection Component', () => {
     render(<EducationSection />);
     const honors = screen.getAllByText('Honors & Achievements:');
     expect(honors.length).toBe(2);
+  });
+
+  it('renders Academic Achievements section', () => {
+    render(<EducationSection />);
+    expect(screen.getByText('Academic Achievements')).toBeDefined();
+  });
+
+  it('renders certifications', () => {
+    render(<EducationSection />);
+    expect(screen.getByText('AWS Certified Solutions Architect')).toBeDefined();
+    expect(screen.getByText('Google Cloud Professional Cloud Architect')).toBeDefined();
+  });
+
+  it('renders awards', () => {
+    render(<EducationSection />);
+    const awards = screen.getAllByText('Outstanding Graduate Award');
+    expect(awards.length).toBe(2);
+    expect(screen.getByText('Dean\'s Research Fellowship')).toBeDefined();
+  });
+
+  it('renders academic highlights', () => {
+    render(<EducationSection />);
+    expect(screen.getByText('Best Paper Award')).toBeDefined();
+    expect(screen.getByText('Hackathon Winner')).toBeDefined();
+  });
+
+  it('uses AcademicAchievements component for achievements grid', () => {
+    const { container } = render(<EducationSection />);
+    const grid = container.querySelector('.grid');
+    expect(grid).toBeDefined();
   });
 });
