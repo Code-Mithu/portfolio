@@ -1,46 +1,107 @@
+'use client';
+
 import React from 'react';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
 
+  const navigationLinks = [
+    { name: 'About', href: '#about' },
+    { name: 'Skills', href: '#skills' },
+    { name: 'Projects', href: '#projects' },
+    { name: 'Experience', href: '#experience' },
+    { name: 'Education', href: '#education' },
+    { name: 'Contact', href: '#contact' },
+  ];
+
+  const socialLinks = [
+    { name: 'GitHub', href: '#', ariaLabel: 'GitHub Profile' },
+    { name: 'LinkedIn', href: '#', ariaLabel: 'LinkedIn Profile' },
+    { name: 'Twitter', href: '#', ariaLabel: 'Twitter Profile' },
+  ];
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <footer className="bg-primary text-white py-12" aria-label="Site Footer">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Brand/Copyright */}
-          <div>
-            <p className="font-bold text-xl mb-4">Portfolio</p>
-            <p className="text-slate-300">
+          <div className="space-y-4">
+            <h3 className="font-bold text-xl">Portfolio</h3>
+            <p className="text-slate-300 text-sm">
+              Building digital experiences that matter. 
+              Showcasing projects, skills, and professional journey.
+            </p>
+            <p className="text-slate-400 text-sm">
               &copy; {currentYear} All rights reserved.
             </p>
           </div>
 
-          {/* Links */}
+          {/* Navigation Links */}
           <nav aria-label="Footer navigation">
             <h4 className="font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              {['About', 'Skills', 'Projects', 'Experience'].map(link => (
-                <li key={link}>
-                  <a href={`/#${link.toLowerCase()}`} className="text-slate-300 hover:text-white">
-                    {link}
+              {navigationLinks.map((link) => (
+                <li key={link.name}>
+                  <a
+                    href={link.href}
+                    className="text-slate-300 hover:text-white transition-colors text-sm"
+                  >
+                    {link.name}
                   </a>
                 </li>
               ))}
             </ul>
           </nav>
 
-          {/* Contact/Back to Top */}
-          <div className="flex flex-col items-start md:items-end">
-            <h4 className="font-semibold mb-4">Contact</h4>
-            <p className="text-slate-300 mb-4">email@example.com</p>
-            <a 
-              href="#top" 
-              className="text-white hover:underline focus:underline"
-              aria-label="Back to top"
-            >
-              Back to Top ↑
-            </a>
+          {/* Contact Info & Social */}
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-semibold mb-4">Contact</h4>
+              <p className="text-slate-300 text-sm mb-2">
+                <a href="mailto:email@example.com" className="hover:text-white transition-colors">
+                  email@example.com
+                </a>
+              </p>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-4">Connect</h4>
+              <ul className="space-y-2">
+                {socialLinks.map((social) => (
+                  <li key={social.name}>
+                    <a
+                      href={social.href}
+                      aria-label={social.ariaLabel}
+                      className="text-slate-300 hover:text-white transition-colors text-sm"
+                    >
+                      {social.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
+        </div>
+
+        {/* Back to Top */}
+        <div className="mt-8 pt-8 border-t border-slate-700 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-slate-400 text-sm">
+            Made with ❤️ using Next.js
+          </p>
+          <button
+            onClick={scrollToTop}
+            className="text-slate-300 hover:text-white transition-colors text-sm flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-white rounded px-2 py-1"
+            aria-label="Back to top"
+          >
+            Back to Top
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+          </button>
         </div>
       </div>
     </footer>
