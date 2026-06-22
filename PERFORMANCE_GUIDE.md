@@ -14,6 +14,9 @@ This project implements several strategies to ensure high performance and access
 
 ## 4. Bundle Optimization
 - Next.js optimizes build output automatically.
+- **Dependency Management**: Use named imports for libraries (e.g., `lucide-react`) to avoid importing the entire library.
+- **Bundle Analysis**: Use `@next/bundle-analyzer` to inspect bundle contents and identify large dependencies. 
+  - To analyze: `ANALYZE=true npm run build` (inside `frontend/`).
 - Keep dependencies lean and remove unused packages.
 
 ## 5. Performance Validation

@@ -28,6 +28,7 @@
     "typescript": "^6.0.3"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^16.2.9",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@vitejs/plugin-react": "^6.0.2",

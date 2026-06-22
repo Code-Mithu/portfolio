@@ -1,5 +1,5 @@
 import React from 'react';
-import * as Lucide from 'lucide-react';
+import { Code, Link, Mail } from 'lucide-react';
 
 interface SocialLinksProps {
   className?: string;
@@ -11,9 +11,9 @@ interface SocialLinksProps {
  */
 export const SocialLinks: React.FC<SocialLinksProps> = ({ className = '' }) => {
   const links = [
-    { name: 'GitHub', href: 'https://github.com/yourusername', icon: Lucide.Code },
-    { name: 'LinkedIn', href: 'https://linkedin.com/in/yourprofile', icon: Lucide.Link },
-    { name: 'Email', href: 'mailto:email@example.com', icon: Lucide.Mail },
+    { name: 'GitHub', href: 'https://github.com/yourusername', icon: Code },
+    { name: 'LinkedIn', href: 'https://linkedin.com/in/yourprofile', icon: Link },
+    { name: 'Email', href: 'mailto:email@example.com', icon: Mail },
   ];
 
   return (
