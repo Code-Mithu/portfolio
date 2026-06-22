@@ -1,4 +1,5 @@
 import React from 'react';
+import { Section } from '../ui/Section';
 import { SkillsGrid } from './SkillsGrid';
 
 const skills = [
@@ -21,11 +22,8 @@ const skills = [
 
 export const SkillsSection = () => {
   return (
-    <section id="skills" className="py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold text-primary mb-12 text-center">Skills & Technologies</h2>
-        <SkillsGrid skills={skills} />
-      </div>
-    </section>
+    <Section id="skills" title="Skills & Technologies" background="white">
+      <SkillsGrid skills={skills} />
+    </Section>
   );
 };

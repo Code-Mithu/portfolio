@@ -1,4 +1,5 @@
 import React from 'react';
+import { Section } from '../ui/Section';
 import { Timeline, TimelineItem } from './Timeline';
 import { ExperienceEntry, ExperienceEntry as ExperienceEntryType } from './ExperienceEntry';
 
@@ -53,11 +54,8 @@ const timelineItems: TimelineItem[] = experiences.map((exp) => ({
 
 export const ExperienceSection = () => {
   return (
-    <section id="experience" className="py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold text-primary mb-12 text-center">Work Experience</h2>
-        <Timeline items={timelineItems} />
-      </div>
-    </section>
+    <Section id="experience" title="Work Experience" background="white">
+      <Timeline items={timelineItems} />
+    </Section>
   );
 };
