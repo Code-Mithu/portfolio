@@ -25,30 +25,24 @@ export async function submitContactForm(
   data: ContactFormData,
   config: SubmissionConfig = { endpoint: '/api/contact' }
 ): Promise<SubmissionResult> {
-  const { endpoint, method = 'POST', headers = {}, timeout = 10000 } = config;
+  const { timeout = 10000 } = config;
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
 
   try {
-    // Simulate API call with timeout
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeout);
+    // Simulated API response that respects the abort signal
+    await new Promise<void>((resolve, reject) => {
+      const timer = setTimeout(resolve, 1500);
+      controller.signal.addEventListener('abort', () => {
+        clearTimeout(timer);
+        reject(new DOMException('The operation was aborted.', 'AbortError'));
+      });
+    });
 
-    // Replace this with actual API call in production
-    // const response = await fetch(endpoint, {
-    //   method,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     ...headers,
-    //   },
-    //   body: JSON.stringify(data),
-    //   signal: controller.signal,
-    // });
-
-    // Simulated API response
-    await new Promise((resolve) => setTimeout(resolve, 1500));
     clearTimeout(timeoutId);
 
     // Simulate 90% success rate for demo purposes
-    // In production, this would check the actual response status
     const isSuccess = Math.random() > 0.1;
 
     if (isSuccess) {
@@ -61,6 +55,8 @@ export async function submitContactForm(
       throw new Error('Failed to send message. Please try again.');
     }
   } catch (error) {
+    clearTimeout(timeoutId);
+
     if (error instanceof Error) {
       if (error.name === 'AbortError') {
         throw new Error('Request timed out. Please try again.');
@@ -97,8 +93,14 @@ export async function submitContactFormAPI(
     clearTimeout(timeoutId);
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ message: 'Server error' }));
-      throw new Error(errorData.message || `Server error: ${response.status}`);
+      let errorMessage: string;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.message || `Server error: ${response.status}`;
+      } catch {
+        errorMessage = `Server error: ${response.status}`;
+      }
+      throw new Error(errorMessage);
     }
 
     const result = await response.json();
