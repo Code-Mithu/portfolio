@@ -1,26 +1,27 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: 'media',
+  darkMode: "class", // we toggle the `dark` class on <html>
   content: [
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./app/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-      },
       colors: {
-        background: 'var(--background)',
-        surface: 'var(--surface)',
-        elevated: 'var(--elevated)',
-        primary: 'var(--primary)',
-        secondary: 'var(--secondary)',
-        foreground: 'var(--text-primary)',
-        muted: 'var(--text-secondary)',
-        border: 'var(--border)',
+        // Core palette
+        dark: "#0A0A0B",
+        surface: "#111827",
+        glass: "rgba(255,255,255,0.04)",
+        border: "rgba(255,255,255,0.08)",
+        // Aliases for convenience
+        background: "var(--color-surface)",
+        foreground: "var(--color-surface)",
+      },
+      zIndex: {
+        40: "40", // desktop navbar
+        50: "50", // mobile overlay
       },
     },
   },
   plugins: [],
-}
+};
