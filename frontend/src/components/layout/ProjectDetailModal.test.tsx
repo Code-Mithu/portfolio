@@ -403,4 +403,117 @@ describe('ProjectDetailModal Component', () => {
     const modal = screen.getByRole('dialog');
     expect(modal).toHaveClass('fixed', 'inset-0', 'z-50', 'flex', 'items-center', 'justify-center');
   });
+
+  describe('Focus Trap', () => {
+    it('traps focus forward: wraps from last to first focusable element on Tab', () => {
+      render(
+        <ProjectDetailModal 
+          project={mockProject} 
+          isOpen={true} 
+          onClose={mockOnClose} 
+        />
+      );
+      const modal = screen.getByRole('dialog');
+      const focusableElements = modal.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+      lastElement.focus();
+      expect(document.activeElement).toBe(lastElement);
+
+      const tabEvent = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true });
+      const preventDefaultSpy = vi.spyOn(tabEvent, 'preventDefault');
+      document.dispatchEvent(tabEvent);
+
+      expect(preventDefaultSpy).toHaveBeenCalled();
+    });
+
+    it('traps focus backward: wraps from first to last focusable element on Shift+Tab', () => {
+      render(
+        <ProjectDetailModal 
+          project={mockProject} 
+          isOpen={true} 
+          onClose={mockOnClose} 
+        />
+      );
+      const modal = screen.getByRole('dialog');
+      const focusableElements = modal.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      const firstElement = focusableElements[0] as HTMLElement;
+
+      firstElement.focus();
+      expect(document.activeElement).toBe(firstElement);
+
+      const tabEvent = new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true });
+      const preventDefaultSpy = vi.spyOn(tabEvent, 'preventDefault');
+      document.dispatchEvent(tabEvent);
+
+      expect(preventDefaultSpy).toHaveBeenCalled();
+    });
+
+    it('does not trap focus when non-Tab key is pressed', () => {
+      render(
+        <ProjectDetailModal 
+          project={mockProject} 
+          isOpen={true} 
+          onClose={mockOnClose} 
+        />
+      );
+
+      const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true });
+      const preventDefaultSpy = vi.spyOn(event, 'preventDefault');
+      document.dispatchEvent(event);
+
+      expect(preventDefaultSpy).not.toHaveBeenCalled();
+    });
+
+    it('does not interfere with Tab when focus is not on boundary elements', () => {
+      render(
+        <ProjectDetailModal 
+          project={mockProject} 
+          isOpen={true} 
+          onClose={mockOnClose} 
+        />
+      );
+      const modal = screen.getByRole('dialog');
+      const focusableElements = modal.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+
+      if (focusableElements.length > 2) {
+        const middleElement = focusableElements[1] as HTMLElement;
+        middleElement.focus();
+
+        const tabEvent = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true });
+        const preventDefaultSpy = vi.spyOn(tabEvent, 'preventDefault');
+        document.dispatchEvent(tabEvent);
+
+        expect(preventDefaultSpy).not.toHaveBeenCalled();
+      }
+    });
+
+    it('cleans up focus trap listener when modal closes', () => {
+      const removeEventListenerSpy = vi.spyOn(document, 'removeEventListener');
+      const { rerender } = render(
+        <ProjectDetailModal 
+          project={mockProject} 
+          isOpen={true} 
+          onClose={mockOnClose} 
+        />
+      );
+
+      rerender(
+        <ProjectDetailModal 
+          project={mockProject} 
+          isOpen={false} 
+          onClose={mockOnClose} 
+        />
+      );
+
+      expect(removeEventListenerSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
+      removeEventListenerSpy.mockRestore();
+    });
+  });
 });

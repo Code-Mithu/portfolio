@@ -254,5 +254,59 @@ describe('Contact Submission Service', () => {
 
       await expect(submitContactFormAPI(mockData)).rejects.toThrow('An unexpected error occurred');
     });
+
+    it('handles AbortError (timeout) in submitContactFormAPI', async () => {
+      const mockData: ContactFormData = {
+        name: 'Test',
+        email: 'test@test.com',
+        subject: 'Test',
+        message: 'Test',
+      };
+
+      const abortError = new Error('The operation was aborted');
+      abortError.name = 'AbortError';
+      global.fetch = vi.fn().mockRejectedValue(abortError) as any;
+
+      await expect(submitContactFormAPI(mockData)).rejects.toThrow('Request timed out. Please try again.');
+    });
+  });
+
+  describe('submitContactForm - edge cases', () => {
+    it('handles AbortError (timeout) in simulated submission', async () => {
+      const mockData: ContactFormData = {
+        name: 'Test',
+        email: 'test@test.com',
+        subject: 'Test',
+        message: 'Test',
+      };
+
+      const abortError = new Error('The operation was aborted');
+      abortError.name = 'AbortError';
+
+      vi.spyOn(global, 'setTimeout').mockImplementation((fn: any) => {
+        throw abortError;
+      });
+
+      await expect(submitContactForm(mockData)).rejects.toThrow('Request timed out. Please try again.');
+
+      vi.restoreAllMocks();
+    });
+
+    it('handles non-Error exception in simulated submission', async () => {
+      const mockData: ContactFormData = {
+        name: 'Test',
+        email: 'test@test.com',
+        subject: 'Test',
+        message: 'Test',
+      };
+
+      vi.spyOn(global, 'setTimeout').mockImplementation(() => {
+        throw 'string error';
+      });
+
+      await expect(submitContactForm(mockData)).rejects.toThrow('An unexpected error occurred');
+
+      vi.restoreAllMocks();
+    });
   });
 });
