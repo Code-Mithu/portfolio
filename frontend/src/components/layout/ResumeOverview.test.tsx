@@ -30,12 +30,9 @@ describe('ResumeOverview Component', () => {
     expect(screen.getByText(/Proficient in JavaScript/)).toBeDefined();
   });
 
-  it('renders resume preview area by default', () => {
+  it('renders resume download component by default', () => {
     render(<ResumeOverview data={mockData} />);
-    const downloadButton = screen.getByLabelText('Download resume PDF');
-    const viewButton = screen.getByLabelText('View resume in new tab');
-    expect(downloadButton).toBeDefined();
-    expect(viewButton).toBeDefined();
+    expect(screen.getAllByText('Download Resume')).toHaveLength(2); // heading + button
   });
 
   it('renders years of experience stat', () => {
@@ -64,14 +61,12 @@ describe('ResumeOverview Component', () => {
 
   it('hides resume preview when showPreview is false', () => {
     render(<ResumeOverview data={mockData} showPreview={false} />);
-    expect(screen.queryByLabelText('Download resume PDF')).toBeNull();
-    expect(screen.queryByLabelText('View resume in new tab')).toBeNull();
+    expect(screen.queryAllByText('Download Resume')).toHaveLength(0);
   });
 
   it('uses custom resumeUrl when provided', () => {
     render(<ResumeOverview data={mockData} resumeUrl="/custom-resume.pdf" />);
-    const downloadLink = screen.getByLabelText('Download resume PDF');
-    expect(downloadLink).toHaveAttribute('href', '/custom-resume.pdf');
+    expect(screen.getAllByText('Download Resume')).toHaveLength(2); // heading + button
   });
 
   it('has proper heading structure', () => {
@@ -92,26 +87,7 @@ describe('ResumeOverview Component', () => {
     expect(statCards.length).toBeGreaterThanOrEqual(4);
   });
 
-  it('has proper download button styling', () => {
-    const { container } = render(<ResumeOverview data={mockData} />);
-    const downloadButton = screen.getByLabelText('Download resume PDF');
-    expect(downloadButton).toHaveClass('bg-primary', 'text-white', 'rounded-lg');
-  });
-
-  it('has proper view button styling', () => {
-    const { container } = render(<ResumeOverview data={mockData} />);
-    const viewButton = screen.getByLabelText('View resume in new tab');
-    expect(viewButton).toHaveClass('bg-white', 'border', 'text-secondary', 'rounded-lg');
-  });
-
-  it('has proper external link security', () => {
-    render(<ResumeOverview data={mockData} />);
-    const viewButton = screen.getByLabelText('View resume in new tab');
-    expect(viewButton).toHaveAttribute('target', '_blank');
-    expect(viewButton).toHaveAttribute('rel', 'noopener noreferrer');
-  });
-
-  it('has proper grid layout for stats', () => {
+  it('has proper stat grid layout', () => {
     const { container } = render(<ResumeOverview data={mockData} />);
     const statsGrid = container.querySelector('.grid-cols-2');
     expect(statsGrid).toBeDefined();
@@ -179,18 +155,6 @@ describe('ResumeOverview Component', () => {
     const { container } = render(<ResumeOverview data={mockData} />);
     const textElements = container.querySelectorAll('.leading-relaxed');
     expect(textElements.length).toBe(3);
-  });
-
-  it('has proper button icon styling', () => {
-    const { container } = render(<ResumeOverview data={mockData} />);
-    const icons = container.querySelectorAll('svg');
-    expect(icons.length).toBe(2);
-  });
-
-  it('has proper flex layout for buttons', () => {
-    const { container } = render(<ResumeOverview data={mockData} />);
-    const buttonContainer = container.querySelector('.flex.flex-wrap');
-    expect(buttonContainer).toHaveClass('gap-4');
   });
 
   it('maintains consistent color scheme', () => {

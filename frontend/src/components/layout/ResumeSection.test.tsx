@@ -52,7 +52,7 @@ describe('ResumeSection Component', () => {
 
   it('renders download resume button', () => {
     render(<ResumeSection />);
-    expect(screen.getByLabelText('Download resume PDF')).toBeDefined();
+    expect(screen.getByLabelText('Download resume')).toBeDefined();
   });
 
   it('renders view resume button', () => {
