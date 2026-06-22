@@ -84,6 +84,7 @@ export const ContactForm = ({ onSubmit, isLoading = false, initialData }: Contac
           onBlur={() => handleBlur('name')}
           placeholder="Your name"
           required
+          maxLength={100}
           disabled={isLoading}
           className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-slate-400 ${
             errors.name ? 'border-rose-500 focus:ring-rose-500' : 'border-slate-300'
@@ -114,6 +115,7 @@ export const ContactForm = ({ onSubmit, isLoading = false, initialData }: Contac
           onBlur={() => handleBlur('email')}
           placeholder="your.email@example.com"
           required
+          maxLength={254}
           disabled={isLoading}
           className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-slate-400 ${
             errors.email ? 'border-rose-500 focus:ring-rose-500' : 'border-slate-300'
@@ -144,6 +146,7 @@ export const ContactForm = ({ onSubmit, isLoading = false, initialData }: Contac
           onBlur={() => handleBlur('subject')}
           placeholder="What is this regarding?"
           required
+          maxLength={100}
           disabled={isLoading}
           className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-slate-400 ${
             errors.subject ? 'border-rose-500 focus:ring-rose-500' : 'border-slate-300'
@@ -174,6 +177,7 @@ export const ContactForm = ({ onSubmit, isLoading = false, initialData }: Contac
           placeholder="Your message..."
           required
           rows={5}
+          maxLength={1000}
           disabled={isLoading}
           className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-slate-400 resize-none ${
             errors.message ? 'border-rose-500 focus:ring-rose-500' : 'border-slate-300'

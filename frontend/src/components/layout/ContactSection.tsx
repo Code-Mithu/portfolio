@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { ContactForm } from './ContactForm';
 import { ContactFormData } from '../../utils/validation';
 import { submitContactForm } from '../../services/contactSubmission';
+
+const RATE_LIMIT_MS = 10_000;
 
 export type SubmissionStatus = 'idle' | 'submitting' | 'success' | 'error';
 
@@ -11,8 +13,17 @@ export const ContactSection = () => {
   const [status, setStatus] = useState<SubmissionStatus>('idle');
   const [statusMessage, setStatusMessage] = useState('');
   const [key, setKey] = useState(0);
+  const lastSubmitRef = useRef<number>(0);
 
   const handleFormSubmit = async (data: ContactFormData) => {
+    const now = Date.now();
+    if (now - lastSubmitRef.current < RATE_LIMIT_MS) {
+      setStatus('error');
+      setStatusMessage('Please wait a few seconds before submitting again.');
+      return;
+    }
+    lastSubmitRef.current = now;
+
     setStatus('submitting');
     setStatusMessage('');
 

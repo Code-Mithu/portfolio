@@ -35,7 +35,7 @@ export const ResumeDownload = ({
       const response = await fetch(resumeUrl, { method: 'HEAD' });
       return response.ok;
     } catch (error) {
-      console.error('File check failed:', error);
+      void error;
       return false;
     }
   }, [resumeUrl]);
