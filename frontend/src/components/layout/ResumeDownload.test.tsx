@@ -73,7 +73,6 @@ describe('ResumeDownload Component', () => {
   });
 
   it('handles network error', async () => {
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     (global.fetch as any).mockRejectedValueOnce(new Error('Network error'));
 
     render(<ResumeDownload />);
@@ -82,10 +81,8 @@ describe('ResumeDownload Component', () => {
     fireEvent.click(downloadButton);
 
     await waitFor(() => {
-      expect(screen.getByText(/Resume file is currently unavailable/)).toBeDefined();
+      expect(screen.getByText('Network error')).toBeDefined();
     });
-    
-    consoleSpy.mockRestore();
   });
 
   it('displays error message with proper aria attributes', async () => {
@@ -103,7 +100,7 @@ describe('ResumeDownload Component', () => {
     });
   });
 
-  it('calls onDownloadError callback when error occurs', async () => {
+  it('calls onDownloadError callback with actual error when network fails', async () => {
     const onError = vi.fn();
     (global.fetch as any).mockRejectedValueOnce(new Error('Network error'));
 
@@ -113,7 +110,7 @@ describe('ResumeDownload Component', () => {
     fireEvent.click(downloadButton);
 
     await waitFor(() => {
-      expect(onError).toHaveBeenCalled();
+      expect(onError).toHaveBeenCalledWith(expect.objectContaining({ message: 'Network error' }));
     });
   });
 

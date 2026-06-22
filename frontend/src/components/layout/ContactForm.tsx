@@ -4,16 +4,17 @@ import React from 'react';
 import { validateContactForm, defaultContactFormRules, ContactFormData } from '../../utils/validation';
 
 interface ContactFormProps {
-  onSubmit: (data: ContactFormData) => void;
+  onSubmit: (data: ContactFormData) => void | Promise<void>;
   isLoading?: boolean;
   initialData?: Partial<ContactFormData>;
+  onError?: (error: unknown) => void;
 }
 
 /**
  * ContactForm component with name, email, subject, message fields and submit button.
  * Features responsive design, accessibility support, validation, and clean UI.
  */
-export const ContactForm = ({ onSubmit, isLoading = false, initialData }: ContactFormProps) => {
+export const ContactForm = ({ onSubmit, isLoading = false, initialData, onError }: ContactFormProps) => {
   const [formData, setFormData] = React.useState<ContactFormData>({
     name: initialData?.name || '',
     email: initialData?.email || '',
@@ -36,7 +37,7 @@ export const ContactForm = ({ onSubmit, isLoading = false, initialData }: Contac
     setErrors(prev => ({ ...prev, [field]: error }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validate all fields
@@ -57,7 +58,11 @@ export const ContactForm = ({ onSubmit, isLoading = false, initialData }: Contac
     });
 
     if (result.isValid) {
-      onSubmit(formData);
+      try {
+        await onSubmit(formData);
+      } catch (error) {
+        onError?.(error);
+      }
     }
   };
 

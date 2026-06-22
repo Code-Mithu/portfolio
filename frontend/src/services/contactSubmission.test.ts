@@ -206,7 +206,7 @@ describe('Contact Submission Service', () => {
         },
       }) as any;
 
-      await expect(submitContactFormAPI(mockData)).rejects.toThrow('Server error');
+      await expect(submitContactFormAPI(mockData)).rejects.toThrow('Server error: 400');
     });
 
     it('handles network error', async () => {

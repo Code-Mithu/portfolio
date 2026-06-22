@@ -30,14 +30,8 @@ export const ResumeDownload = ({
   });
 
   const checkFileExists = useCallback(async (): Promise<boolean> => {
-    try {
-      // Simulate file check - in production, this would be a HEAD request or API call
-      const response = await fetch(resumeUrl, { method: 'HEAD' });
-      return response.ok;
-    } catch (error) {
-      console.error('File check failed:', error);
-      return false;
-    }
+    const response = await fetch(resumeUrl, { method: 'HEAD' });
+    return response.ok;
   }, [resumeUrl]);
 
   const handleDownload = useCallback(async () => {
@@ -66,10 +60,12 @@ export const ResumeDownload = ({
 
       setState(prev => ({ ...prev, isLoading: false, fileExists: true }));
     } catch (error) {
-      // Handle the case where checkFileExists itself fails
-      const errorMessage = error instanceof Error ? error.message : 'Resume file is currently unavailable. Please try again later.';
+      const errorMessage = error instanceof Error
+        ? error.message
+        : 'Resume file is currently unavailable. Please try again later.';
+      const reportedError = error instanceof Error ? error : new Error(errorMessage);
       setState(prev => ({ ...prev, isLoading: false, error: errorMessage, fileExists: false }));
-      onDownloadError?.(error instanceof Error ? error : new Error(errorMessage));
+      onDownloadError?.(reportedError);
     }
   }, [resumeUrl, fileName, checkFileExists, onDownloadError]);
 
