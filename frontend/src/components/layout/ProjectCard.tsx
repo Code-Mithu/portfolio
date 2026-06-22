@@ -3,7 +3,9 @@ import React from 'react';
 export interface Project {
   title: string;
   description: string;
+  detailedDescription?: string;
   tech: string[];
+  features?: string[];
   thumbnail?: string;
   githubUrl?: string;
   demoUrl?: string;
