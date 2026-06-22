@@ -1,6 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { Project } from './ProjectCard';
 import { ProjectActions } from './ProjectActions';
+import { TechBadge } from '../ui/TechBadge';
+import { useBodyScrollLock } from '../../hooks/useBodyScrollLock';
+import { useEscapeKey } from '../../hooks/useEscapeKey';
 
 interface ProjectDetailModalProps {
   project: Project | null;
@@ -16,19 +19,9 @@ export const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailMo
   const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  // Handle escape key to close modal
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isOpen) {
-        onClose();
-      }
-    };
+  useEscapeKey(onClose, isOpen);
+  useBodyScrollLock(isOpen);
 
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, [isOpen, onClose]);
-
-  // Focus management
   useEffect(() => {
     if (isOpen && closeButtonRef.current) {
       closeButtonRef.current.focus();
@@ -63,18 +56,6 @@ export const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailMo
 
     document.addEventListener('keydown', trapFocus);
     return () => document.removeEventListener('keydown', trapFocus);
-  }, [isOpen]);
-
-  // Prevent body scroll when modal is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
   }, [isOpen]);
 
   if (!project || !isOpen) {
@@ -151,12 +132,7 @@ export const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailMo
             <h3 className="text-lg font-semibold text-primary mb-3">Technology Stack</h3>
             <div className="flex flex-wrap gap-3">
               {project.tech.map((tech) => (
-                <span
-                  key={tech}
-                  className="px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium border border-blue-100"
-                >
-                  {tech}
-                </span>
+                <TechBadge key={tech} name={tech} size="md" />
               ))}
             </div>
           </section>

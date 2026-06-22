@@ -1,4 +1,5 @@
 import React from 'react';
+import { Section } from '../ui/Section';
 import { ProjectCard } from './ProjectCard';
 
 const projects = [
@@ -29,15 +30,12 @@ const projects = [
 
 export const ProjectsSection = () => {
   return (
-    <section id="projects" className="py-16 bg-slate-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold text-primary mb-12 text-center">Featured Projects</h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          {projects.map((project) => (
-            <ProjectCard key={project.title} project={project} />
-          ))}
-        </div>
+    <Section id="projects" title="Featured Projects" background="slate">
+      <div className="grid md:grid-cols-3 gap-8">
+        {projects.map((project) => (
+          <ProjectCard key={project.title} project={project} />
+        ))}
       </div>
-    </section>
+    </Section>
   );
 };

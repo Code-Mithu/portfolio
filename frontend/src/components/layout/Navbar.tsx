@@ -1,43 +1,29 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import { clsx } from 'clsx';
 import { Container } from '../ui/Container';
 import { Button } from '../ui/Button';
-
-const navLinks = [
-  { name: 'About', href: '/#about' },
-  { name: 'Skills', href: '/#skills' },
-  { name: 'Projects', href: '/#projects' },
-  { name: 'Experience', href: '/#experience' },
-  { name: 'Contact', href: '/#contact' },
-];
+import { useBodyScrollLock } from '../../hooks/useBodyScrollLock';
+import { useEscapeKey } from '../../hooks/useEscapeKey';
+import { navigationLinks } from '../../data/navigation';
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Handle focus trap / closing on escape / body scroll lock
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsOpen(false);
-    };
+  const closeMenu = useCallback(() => setIsOpen(false), []);
 
+  useBodyScrollLock(isOpen);
+  useEscapeKey(closeMenu, isOpen);
+
+  useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      document.addEventListener('keydown', handleEscape);
       setTimeout(() => menuRef.current?.querySelector('a')?.focus(), 50);
-    } else {
-      document.body.style.overflow = '';
     }
-    
-    return () => {
-      document.body.style.overflow = '';
-      document.removeEventListener('keydown', handleEscape);
-    };
   }, [isOpen]);
 
   // Handle scroll position tracking
@@ -68,7 +54,7 @@ export const Navbar = () => {
         
         {/* Desktop Nav */}
         <div className="hidden md:flex space-x-8 items-center" role="list">
-        {navLinks.map((link) => (
+        {navigationLinks.map((link) => (
           <a
             key={link.name}
             href={link.href}
@@ -116,7 +102,7 @@ export const Navbar = () => {
           ref={menuRef}
           className="fixed top-16 left-0 w-full z-50 md:hidden bg-white border-t p-4 flex flex-col space-y-4 shadow-lg"
         >
-          {navLinks.map((link) => (
+          {navigationLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { Section } from '../ui/Section';
 import { ContactForm } from './ContactForm';
 import { ContactFormData } from '../../utils/validation';
 import { submitContactForm } from '../../services/contactSubmission';
@@ -22,7 +23,6 @@ export const ContactSection = () => {
       if (result.success) {
         setStatus('success');
         setStatusMessage(result.message);
-        // Reset form by incrementing key to force re-render
         setKey(prev => prev + 1);
       } else {
         throw new Error(result.message);
@@ -39,10 +39,8 @@ export const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="py-16 bg-slate-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold text-primary mb-12 text-center">Contact Me</h2>
-        <div className="grid md:grid-cols-2 gap-12">
+    <Section id="contact" title="Contact Me" background="slate">
+      <div className="grid md:grid-cols-2 gap-12">
           {/* Form */}
           <div className="bg-white p-8 rounded-lg shadow-sm border border-slate-100">
             {status === 'idle' || status === 'submitting' ? (
@@ -97,7 +95,6 @@ export const ContactSection = () => {
             </div>
           </div>
         </div>
-      </div>
-    </section>
+    </Section>
   );
 };

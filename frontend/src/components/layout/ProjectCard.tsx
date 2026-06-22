@@ -1,5 +1,6 @@
 import React from 'react';
 import { ProjectActions } from './ProjectActions';
+import { TechBadge } from '../ui/TechBadge';
 
 export interface Project {
   title: string;
@@ -47,12 +48,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         {/* Technology Stack */}
         <div className="flex flex-wrap gap-2 mb-6">
           {project.tech.map((tech) => (
-            <span
-              key={tech}
-              className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium border border-blue-100"
-            >
-              {tech}
-            </span>
+            <TechBadge key={tech} name={tech} />
           ))}
         </div>
 

@@ -1,18 +1,10 @@
 'use client';
 
 import React from 'react';
+import { footerNavigationLinks } from '../../data/navigation';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
-
-  const navigationLinks = [
-    { name: 'About', href: '#about' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Experience', href: '#experience' },
-    { name: 'Education', href: '#education' },
-    { name: 'Contact', href: '#contact' },
-  ];
 
   const socialLinks = [
     { name: 'GitHub', href: '#', ariaLabel: 'GitHub Profile' },
@@ -44,10 +36,10 @@ export const Footer = () => {
           <nav aria-label="Footer navigation">
             <h4 className="font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              {navigationLinks.map((link) => (
+              {footerNavigationLinks.map((link) => (
                 <li key={link.name}>
                   <a
-                    href={link.href}
+                    href={link.href.replace(/^\/#/, '#')}
                     className="text-slate-300 hover:text-white transition-colors text-sm"
                   >
                     {link.name}
