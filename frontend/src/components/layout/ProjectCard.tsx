@@ -1,4 +1,5 @@
 import React from 'react';
+import { ProjectActions } from './ProjectActions';
 
 export interface Project {
   title: string;
@@ -57,30 +58,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 
         {/* Action Area */}
         <div className="mt-auto pt-4 border-t border-slate-100">
-          <div className="flex gap-3">
-            {project.githubUrl && (
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 px-4 py-2 bg-white border border-primary text-primary rounded font-medium text-sm hover:bg-slate-50 transition-colors flex items-center justify-center"
-                aria-label={`View ${project.title} on GitHub`}
-              >
-                GitHub
-              </a>
-            )}
-            {project.demoUrl && (
-              <a
-                href={project.demoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 px-4 py-2 bg-primary text-white rounded font-medium text-sm hover:bg-blue-700 transition-colors flex items-center justify-center"
-                aria-label={`View live demo of ${project.title}`}
-              >
-                Live Demo
-              </a>
-            )}
-          </div>
+          <ProjectActions project={project} variant="card" />
         </div>
       </div>
     </article>

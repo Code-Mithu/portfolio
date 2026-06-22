@@ -1,5 +1,6 @@
 import React from 'react';
 import { ProjectCard, Project } from './ProjectCard';
+import { ProjectActions } from './ProjectActions';
 
 interface FeaturedProjectsSectionProps {
   projects: Project[];
@@ -68,30 +69,7 @@ export const FeaturedProjectsSection = ({
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex flex-wrap gap-4">
-                    {featuredProject.demoUrl && (
-                      <a
-                        href={featuredProject.demoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-8 py-3 bg-white text-primary rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-                        aria-label={`View live demo of ${featuredProject.title}`}
-                      >
-                        Live Demo
-                      </a>
-                    )}
-                    {featuredProject.githubUrl && (
-                      <a
-                        href={featuredProject.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-8 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-                        aria-label={`View ${featuredProject.title} on GitHub`}
-                      >
-                        GitHub
-                      </a>
-                    )}
-                  </div>
+                  <ProjectActions project={featuredProject} variant="hero" />
                 </div>
               </div>
             </div>
