@@ -55,7 +55,6 @@ export const FeaturedProjectsSection = ({
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 </div>
               )}
-              )}
               <div className="relative p-8 lg:p-12 -mt-20 lg:-mt-32">
                 <div className="max-w-3xl">
                   <h3 className="text-3xl lg:text-4xl font-bold text-white mb-4">{featuredProject.title}</h3>
