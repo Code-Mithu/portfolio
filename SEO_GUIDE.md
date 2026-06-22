@@ -10,7 +10,7 @@ Structured data (JSON-LD) is injected directly into page components, as seen in 
 
 ## 3. SEO-Critical Files
 - `frontend/src/app/robots.ts`: Defines search engine crawler rules.
-- `frontend/src/app/sitemap.ts`: Provides search engines with a map of the site.
+- `frontend/src/app/sitemap.ts`: Provides search engines with a map of the site. To add new pages, update the `routes` array within the `sitemap()` function.
 
 ## 4. Best Practices & Validation
 - **Canonical URLs**: Automatically handled via `alternates` in `layout.tsx` or per-page metadata.
@@ -20,3 +20,4 @@ Structured data (JSON-LD) is injected directly into page components, as seen in 
   - Use [Google's Rich Results Test](https://search.google.com/test/rich-results) for structured data.
   - Use [Open Graph Debugger](https://developers.facebook.com/tools/debug/) for OG tags.
   - Run Lighthouse audit in Chrome DevTools to validate SEO and accessibility scores.
+  - Validate the `sitemap.xml` by visiting `/sitemap.xml` in your browser.

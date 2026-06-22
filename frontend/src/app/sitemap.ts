@@ -1,12 +1,26 @@
 import { MetadataRoute } from 'next';
 
+const BASE_URL = 'https://your-portfolio-url.com';
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
+  const routes = [
     {
-      url: 'https://your-portfolio-url.com',
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
+      path: '',
+      changeFrequency: 'monthly' as const,
       priority: 1,
     },
+    // Add future routes here, e.g.:
+    // {
+    //   path: '/blog',
+    //   changeFrequency: 'weekly' as const,
+    //   priority: 0.8,
+    // },
   ];
+
+  return routes.map((route) => ({
+    url: `${BASE_URL}${route.path}`,
+    lastModified: new Date(),
+    changeFrequency: route.changeFrequency,
+    priority: route.priority,
+  }));
 }
