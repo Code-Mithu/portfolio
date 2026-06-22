@@ -1,5 +1,5 @@
 import React from 'react';
-import { SkillCategory } from './SkillCategory';
+import { SkillsGrid } from './SkillsGrid';
 
 const skills = [
   {
@@ -24,16 +24,7 @@ export const SkillsSection = () => {
     <section id="skills" className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl font-bold text-primary mb-12 text-center">Skills & Technologies</h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          {skills.map((skillGroup) => (
-            <SkillCategory
-              key={skillGroup.category}
-              title={skillGroup.category}
-              description={skillGroup.description}
-              items={skillGroup.items}
-            />
-          ))}
-        </div>
+        <SkillsGrid skills={skills} />
       </div>
     </section>
   );

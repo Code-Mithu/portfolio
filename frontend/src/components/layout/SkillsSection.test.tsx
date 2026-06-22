@@ -23,4 +23,10 @@ describe('SkillsSection Component', () => {
     expect(screen.getByText('Tools')).toBeDefined();
     expect(screen.getByText('Backend/Other')).toBeDefined();
   });
+
+  it('uses responsive grid layout', () => {
+    const { container } = render(<SkillsSection />);
+    const grid = container.querySelector('.grid');
+    expect(grid).toHaveClass('grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3');
+  });
 });
