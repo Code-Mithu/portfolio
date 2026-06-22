@@ -1,13 +1,7 @@
 'use client';
 
 import React from 'react';
-
-export interface ContactFormData {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-}
+import { validateContactForm, defaultContactFormRules, ContactFormData } from '../../utils/validation';
 
 interface ContactFormProps {
   onSubmit: (data: ContactFormData) => void;
@@ -17,7 +11,7 @@ interface ContactFormProps {
 
 /**
  * ContactForm component with name, email, subject, message fields and submit button.
- * Features responsive design, accessibility support, and clean UI.
+ * Features responsive design, accessibility support, validation, and clean UI.
  */
 export const ContactForm = ({ onSubmit, isLoading = false, initialData }: ContactFormProps) => {
   const [formData, setFormData] = React.useState<ContactFormData>({
@@ -26,18 +20,57 @@ export const ContactForm = ({ onSubmit, isLoading = false, initialData }: Contac
     subject: initialData?.subject || '',
     message: initialData?.message || '',
   });
+  const [errors, setErrors] = React.useState<Record<string, string>>({});
+  const [touched, setTouched] = React.useState<Record<string, boolean>>({});
+
+  const validateField = (field: keyof ContactFormData, value: string) => {
+    const tempData = { ...formData, [field]: value };
+    const result = validateContactForm(tempData, defaultContactFormRules);
+    const fieldError = result.errors.find((error) => error.field.toLowerCase() === field);
+    return fieldError ? fieldError.message : '';
+  };
+
+  const handleBlur = (field: keyof ContactFormData) => {
+    setTouched(prev => ({ ...prev, [field]: true }));
+    const error = validateField(field, formData[field]);
+    setErrors(prev => ({ ...prev, [field]: error }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+
+    // Validate all fields
+    const result = validateContactForm(formData, defaultContactFormRules);
+    const errorsMap: Record<string, string> = {};
+    result.errors.forEach((error) => {
+      errorsMap[error.field.toLowerCase()] = error.message;
+    });
+
+    setErrors(errorsMap);
+
+    // Mark all fields as touched
+    setTouched({
+      name: true,
+      email: true,
+      subject: true,
+      message: true,
+    });
+
+    if (result.isValid) {
+      onSubmit(formData);
+    }
   };
 
   const handleChange = (field: keyof ContactFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    // Clear error for this field when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6" noValidate>
       {/* Name Field */}
       <div>
         <label htmlFor="contact-name" className="block text-sm font-medium text-secondary mb-2">
@@ -48,12 +81,21 @@ export const ContactForm = ({ onSubmit, isLoading = false, initialData }: Contac
           type="text"
           value={formData.name}
           onChange={(e) => handleChange('name', e.target.value)}
+          onBlur={() => handleBlur('name')}
           placeholder="Your name"
           required
           disabled={isLoading}
-          className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-slate-400"
-          aria-describedby="contact-name-help"
+          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-slate-400 ${
+            errors.name ? 'border-rose-500 focus:ring-rose-500' : 'border-slate-300'
+          }`}
+          aria-invalid={!!errors.name}
+          aria-describedby={errors.name ? 'contact-name-error' : 'contact-name-help'}
         />
+        {errors.name && (
+          <p id="contact-name-error" className="text-rose-500 text-xs mt-1" role="alert">
+            {errors.name}
+          </p>
+        )}
         <span id="contact-name-help" className="sr-only">
           Enter your full name
         </span>
@@ -69,12 +111,21 @@ export const ContactForm = ({ onSubmit, isLoading = false, initialData }: Contac
           type="email"
           value={formData.email}
           onChange={(e) => handleChange('email', e.target.value)}
+          onBlur={() => handleBlur('email')}
           placeholder="your.email@example.com"
           required
           disabled={isLoading}
-          className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-slate-400"
-          aria-describedby="contact-email-help"
+          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-slate-400 ${
+            errors.email ? 'border-rose-500 focus:ring-rose-500' : 'border-slate-300'
+          }`}
+          aria-invalid={!!errors.email}
+          aria-describedby={errors.email ? 'contact-email-error' : 'contact-email-help'}
         />
+        {errors.email && (
+          <p id="contact-email-error" className="text-rose-500 text-xs mt-1" role="alert">
+            {errors.email}
+          </p>
+        )}
         <span id="contact-email-help" className="sr-only">
           Enter your email address
         </span>
@@ -90,12 +141,21 @@ export const ContactForm = ({ onSubmit, isLoading = false, initialData }: Contac
           type="text"
           value={formData.subject}
           onChange={(e) => handleChange('subject', e.target.value)}
+          onBlur={() => handleBlur('subject')}
           placeholder="What is this regarding?"
           required
           disabled={isLoading}
-          className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-slate-400"
-          aria-describedby="contact-subject-help"
+          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-slate-400 ${
+            errors.subject ? 'border-rose-500 focus:ring-rose-500' : 'border-slate-300'
+          }`}
+          aria-invalid={!!errors.subject}
+          aria-describedby={errors.subject ? 'contact-subject-error' : 'contact-subject-help'}
         />
+        {errors.subject && (
+          <p id="contact-subject-error" className="text-rose-500 text-xs mt-1" role="alert">
+            {errors.subject}
+          </p>
+        )}
         <span id="contact-subject-help" className="sr-only">
           Enter the subject of your message
         </span>
@@ -110,15 +170,24 @@ export const ContactForm = ({ onSubmit, isLoading = false, initialData }: Contac
           id="contact-message"
           value={formData.message}
           onChange={(e) => handleChange('message', e.target.value)}
+          onBlur={() => handleBlur('message')}
           placeholder="Your message..."
           required
           rows={5}
           disabled={isLoading}
-          className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-slate-400 resize-none"
-          aria-describedby="contact-message-help"
+          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-slate-400 resize-none ${
+            errors.message ? 'border-rose-500 focus:ring-rose-500' : 'border-slate-300'
+          }`}
+          aria-invalid={!!errors.message}
+          aria-describedby={errors.message ? 'contact-message-error' : 'contact-message-help'}
         />
+        {errors.message && (
+          <p id="contact-message-error" className="text-rose-500 text-xs mt-1" role="alert">
+            {errors.message}
+          </p>
+        )}
         <span id="contact-message-help" className="sr-only">
-          Enter your message
+          Enter your message (minimum 10 characters)
         </span>
       </div>
 

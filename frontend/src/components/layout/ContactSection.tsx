@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState } from 'react';
-import { ContactForm, ContactFormData } from './ContactForm';
+import { ContactForm } from './ContactForm';
+import { ContactFormData } from '../../utils/validation';
 
 export const ContactSection = () => {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [key, setKey] = useState(0);
 
   const handleFormSubmit = async (data: ContactFormData) => {
     setStatus('submitting');
@@ -12,6 +14,8 @@ export const ContactSection = () => {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setStatus('success');
+      // Reset form by incrementing key to force re-render
+      setKey(prev => prev + 1);
     } catch {
       setStatus('error');
     }
@@ -24,7 +28,7 @@ export const ContactSection = () => {
         <div className="grid md:grid-cols-2 gap-12">
           {/* Form */}
           <div className="bg-white p-8 rounded-lg shadow-sm border border-slate-100">
-            <ContactForm onSubmit={handleFormSubmit} isLoading={status === 'submitting'} />
+            <ContactForm key={key} onSubmit={handleFormSubmit} isLoading={status === 'submitting'} />
             {status === 'success' && (
               <div role="alert" aria-live="polite" className="mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-700 text-center">
                 Message sent successfully!

@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { ContactForm, ContactFormData } from './ContactForm';
+import { ContactForm } from './ContactForm';
 import { describe, it, expect, vi } from 'vitest';
 
 describe('ContactForm Component', () => {
@@ -38,16 +38,157 @@ describe('ContactForm Component', () => {
     expect(screen.getByText('Send Message')).toBeDefined();
   });
 
+  it('shows error for empty name on submit', () => {
+    render(<ContactForm onSubmit={mockSubmit} />);
+    fireEvent.click(screen.getByText('Send Message'));
+    expect(screen.getByText('Name is required')).toBeDefined();
+  });
+
+  it('shows error for empty email on submit', () => {
+    render(<ContactForm onSubmit={mockSubmit} />);
+    fireEvent.click(screen.getByText('Send Message'));
+    expect(screen.getByText('Email is required')).toBeDefined();
+  });
+
+  it('shows error for invalid email on submit', () => {
+    render(<ContactForm onSubmit={mockSubmit} />);
+    fireEvent.change(screen.getByLabelText(/Name/), { target: { value: 'John Doe' } });
+    fireEvent.change(screen.getByLabelText(/Email/), { target: { value: 'invalid-email' } });
+    fireEvent.change(screen.getByLabelText(/Subject/), { target: { value: 'Test' } });
+    fireEvent.change(screen.getByLabelText(/Message/), { target: { value: 'A valid message text' } });
+    fireEvent.click(screen.getByText('Send Message'));
+    expect(screen.getByText('Please enter a valid email address')).toBeDefined();
+  });
+
+  it('shows error for empty subject on submit', () => {
+    render(<ContactForm onSubmit={mockSubmit} />);
+    fireEvent.click(screen.getByText('Send Message'));
+    expect(screen.getByText('Subject is required')).toBeDefined();
+  });
+
+  it('shows error for empty message on submit', () => {
+    render(<ContactForm onSubmit={mockSubmit} />);
+    fireEvent.click(screen.getByText('Send Message'));
+    expect(screen.getByText('Message is required')).toBeDefined();
+  });
+
+  it('shows error for name too short', () => {
+    render(<ContactForm onSubmit={mockSubmit} />);
+    fireEvent.change(screen.getByLabelText(/Name/), { target: { value: 'J' } });
+    fireEvent.click(screen.getByText('Send Message'));
+    expect(screen.getByText('Name must be at least 2 characters')).toBeDefined();
+  });
+
+  it('shows error for subject too short', () => {
+    render(<ContactForm onSubmit={mockSubmit} />);
+    fireEvent.change(screen.getByLabelText(/Name/), { target: { value: 'John Doe' } });
+    fireEvent.change(screen.getByLabelText(/Email/), { target: { value: 'john@example.com' } });
+    fireEvent.change(screen.getByLabelText(/Subject/), { target: { value: 'Hi' } });
+    fireEvent.change(screen.getByLabelText(/Message/), { target: { value: 'A valid message text' } });
+    fireEvent.click(screen.getByText('Send Message'));
+    expect(screen.getByText('Subject must be at least 3 characters')).toBeDefined();
+  });
+
+  it('shows error for message too short', () => {
+    render(<ContactForm onSubmit={mockSubmit} />);
+    fireEvent.change(screen.getByLabelText(/Name/), { target: { value: 'John Doe' } });
+    fireEvent.change(screen.getByLabelText(/Email/), { target: { value: 'john@example.com' } });
+    fireEvent.change(screen.getByLabelText(/Subject/), { target: { value: 'Test Subject' } });
+    fireEvent.change(screen.getByLabelText(/Message/), { target: { value: 'Short' } });
+    fireEvent.click(screen.getByText('Send Message'));
+    expect(screen.getByText('Message must be at least 10 characters')).toBeDefined();
+  });
+
+  it('clears error when user starts typing', () => {
+    render(<ContactForm onSubmit={mockSubmit} />);
+    const nameInput = screen.getByLabelText(/Name/);
+    
+    // Trigger error
+    fireEvent.click(screen.getByText('Send Message'));
+    expect(screen.getByText('Name is required')).toBeDefined();
+    
+    // Start typing
+    fireEvent.change(nameInput, { target: { value: 'J' } });
+    expect(screen.queryByText('Name is required')).toBeNull();
+  });
+
+  it('validates on field blur', () => {
+    render(<ContactForm onSubmit={mockSubmit} />);
+    const nameInput = screen.getByLabelText(/Name/);
+    
+    fireEvent.blur(nameInput);
+    expect(screen.getByText('Name is required')).toBeDefined();
+  });
+
+  it('does not submit if form has errors', () => {
+    render(<ContactForm onSubmit={mockSubmit} />);
+    fireEvent.click(screen.getByText('Send Message'));
+    expect(mockSubmit).not.toHaveBeenCalled();
+  });
+
+  it('submits valid form data', () => {
+    render(<ContactForm onSubmit={mockSubmit} />);
+    
+    fireEvent.change(screen.getByLabelText(/Name/), { target: { value: 'John Doe' } });
+    fireEvent.change(screen.getByLabelText(/Email/), { target: { value: 'john@example.com' } });
+    fireEvent.change(screen.getByLabelText(/Subject/), { target: { value: 'Test Subject' } });
+    fireEvent.change(screen.getByLabelText(/Message/), { target: { value: 'A valid message for testing' } });
+    
+    fireEvent.click(screen.getByText('Send Message'));
+    
+    expect(mockSubmit).toHaveBeenCalledWith({
+      name: 'John Doe',
+      email: 'john@example.com',
+      subject: 'Test Subject',
+      message: 'A valid message for testing',
+    });
+  });
+
+  it('shows error styling for invalid field', () => {
+    render(<ContactForm onSubmit={mockSubmit} />);
+    fireEvent.click(screen.getByText('Send Message'));
+    
+    const nameInput = screen.getByLabelText(/Name/);
+    expect(nameInput).toHaveClass('border-rose-500');
+  });
+
+  it('shows red focus ring for invalid field', () => {
+    render(<ContactForm onSubmit={mockSubmit} />);
+    fireEvent.click(screen.getByText('Send Message'));
+    
+    const nameInput = screen.getByLabelText(/Name/);
+    expect(nameInput).toHaveClass('focus:ring-rose-500');
+  });
+
+  it('removes error styling when field is valid', () => {
+    render(<ContactForm onSubmit={mockSubmit} />);
+    const nameInput = screen.getByLabelText(/Name/);
+    
+    fireEvent.change(nameInput, { target: { value: 'John Doe' } });
+    expect(nameInput).toHaveClass('border-slate-300');
+    expect(nameInput).not.toHaveClass('border-rose-500');
+  });
+
+  it('sets aria-invalid for field with error', () => {
+    render(<ContactForm onSubmit={mockSubmit} />);
+    fireEvent.click(screen.getByText('Send Message'));
+    
+    const nameInput = screen.getByLabelText(/Name/);
+    expect(nameInput).toHaveAttribute('aria-invalid', 'true');
+  });
+
+  it('shows error message with role alert', () => {
+    render(<ContactForm onSubmit={mockSubmit} />);
+    fireEvent.click(screen.getByText('Send Message'));
+    
+    const errorMessage = screen.getByText('Name is required');
+    expect(errorMessage).toHaveAttribute('role', 'alert');
+  });
+
   it('shows required asterisk for name', () => {
     const { container } = render(<ContactForm onSubmit={mockSubmit} />);
     const asterisk = container.querySelector('span.text-rose-500');
     expect(asterisk).toBeDefined();
-  });
-
-  it('shows required asterisk for email', () => {
-    render(<ContactForm onSubmit={mockSubmit} />);
-    const asterisks = screen.getAllByText('*');
-    expect(asterisks.length).toBeGreaterThanOrEqual(1);
   });
 
   it('has proper field styling', () => {
@@ -110,24 +251,6 @@ describe('ContactForm Component', () => {
     const messageInput = screen.getByLabelText(/Message/);
     fireEvent.change(messageInput, { target: { value: 'Hello, I would like to discuss...' } });
     expect(messageInput).toHaveValue('Hello, I would like to discuss...');
-  });
-
-  it('calls onSubmit with form data', () => {
-    render(<ContactForm onSubmit={mockSubmit} />);
-    
-    fireEvent.change(screen.getByLabelText(/Name/), { target: { value: 'John Doe' } });
-    fireEvent.change(screen.getByLabelText(/Email/), { target: { value: 'john@example.com' } });
-    fireEvent.change(screen.getByLabelText(/Subject/), { target: { value: 'Inquiry' } });
-    fireEvent.change(screen.getByLabelText(/Message/), { target: { value: 'Test message' } });
-    
-    fireEvent.click(screen.getByText('Send Message'));
-    
-    expect(mockSubmit).toHaveBeenCalledWith({
-      name: 'John Doe',
-      email: 'john@example.com',
-      subject: 'Inquiry',
-      message: 'Test message',
-    });
   });
 
   it('disables submit button when isLoading', () => {
@@ -287,5 +410,11 @@ describe('ContactForm Component', () => {
     render(<ContactForm onSubmit={mockSubmit} />);
     const button = screen.getByRole('button');
     expect(button).toHaveAttribute('aria-describedby', 'submit-help');
+  });
+
+  it('has noValidate on form element', () => {
+    const { container } = render(<ContactForm onSubmit={mockSubmit} />);
+    const form = container.querySelector('form');
+    expect(form).toHaveAttribute('noValidate');
   });
 });
