@@ -10,7 +10,7 @@ This project implements several strategies to ensure high performance and access
 
 ## 3. Code Splitting & Lazy Loading
 - Next.js App Router automatically performs route-based code splitting.
-- Components are loaded only when needed.
+- **Component Lazy Loading**: Below-the-fold components are loaded lazily using `next/dynamic` to reduce the initial JavaScript bundle size and improve LCP.
 
 ## 4. Bundle Optimization
 - Next.js optimizes build output automatically.

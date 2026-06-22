@@ -1,13 +1,15 @@
 import { Navbar } from '@/components/layout/Navbar';
 import { HeroSection } from '@/components/layout/HeroSection';
-import { AboutSection } from '@/components/layout/AboutSection';
-import { SkillsSection } from '@/components/layout/SkillsSection';
-import { ProjectsSection } from '@/components/layout/ProjectsSection';
-import { ExperienceSection } from '@/components/layout/ExperienceSection';
-import { EducationSection } from '@/components/layout/EducationSection';
-import { ResumeSection } from '@/components/layout/ResumeSection';
-import { ContactSection } from '@/components/layout/ContactSection';
+import dynamic from 'next/dynamic';
 import { Footer } from '@/components/layout/Footer';
+
+const AboutSection = dynamic(() => import('@/components/layout/AboutSection').then((mod) => mod.AboutSection));
+const SkillsSection = dynamic(() => import('@/components/layout/SkillsSection').then((mod) => mod.SkillsSection));
+const ProjectsSection = dynamic(() => import('@/components/layout/ProjectsSection').then((mod) => mod.ProjectsSection));
+const ExperienceSection = dynamic(() => import('@/components/layout/ExperienceSection').then((mod) => mod.ExperienceSection));
+const EducationSection = dynamic(() => import('@/components/layout/EducationSection').then((mod) => mod.EducationSection));
+const ResumeSection = dynamic(() => import('@/components/layout/ResumeSection').then((mod) => mod.ResumeSection));
+const ContactSection = dynamic(() => import('@/components/layout/ContactSection').then((mod) => mod.ContactSection));
 
 export default function Home() {
   const jsonLd = {
