@@ -18,4 +18,6 @@ vi.mock('lucide-react', () => ({
   Mail: () => <span data-testid="mail-icon" />,
   Menu: () => <span data-testid="menu-icon" />,
   X: () => <span data-testid="x-icon" />,
+  Code: () => <span data-testid="code-icon" />,
+  Link: () => <span data-testid="link-icon" />,
 }));
