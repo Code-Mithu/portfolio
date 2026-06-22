@@ -1,6 +1,7 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { Footer } from './Footer';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { NAVIGATION_LINKS, SOCIAL_LINKS } from '../../lib/constants';
 
 describe('Footer Component', () => {
   beforeEach(() => {
@@ -22,18 +23,20 @@ describe('Footer Component', () => {
 
   it('renders all navigation links', () => {
     render(<Footer />);
-    const nav = screen.getByRole('navigation');
-    const navigationLinks = ['About', 'Skills', 'Projects', 'Experience', 'Education', 'Contact'];
+    const nav = screen.getByRole('navigation', { name: /Footer navigation/i });
     
-    navigationLinks.forEach(link => {
-      expect(nav).toHaveTextContent(link);
+    NAVIGATION_LINKS.forEach(link => {
+      expect(within(nav).getByText(link.name)).toBeDefined();
     });
   });
 
   it('has proper navigation links with hrefs', () => {
     render(<Footer />);
-    const aboutLink = screen.getByText('About');
-    expect(aboutLink.closest('a')).toHaveAttribute('href', '#about');
+    const nav = screen.getByRole('navigation', { name: /Footer navigation/i });
+    NAVIGATION_LINKS.forEach(link => {
+        const navLink = within(nav).getByText(link.name);
+        expect(navLink.closest('a')).toHaveAttribute('href', link.href);
+    });
   });
 
   it('renders contact info with email link', () => {
@@ -45,10 +48,21 @@ describe('Footer Component', () => {
 
   it('renders social media links', () => {
     render(<Footer />);
-    const socialLinks = ['GitHub', 'LinkedIn', 'Twitter'];
     
-    socialLinks.forEach(link => {
-      expect(screen.getByText(link)).toBeDefined();
+    SOCIAL_LINKS.forEach(link => {
+      expect(screen.getByText(link.name)).toBeDefined();
+    });
+  });
+
+  it('social media links have external link security', () => {
+    render(<Footer />);
+    
+    SOCIAL_LINKS.forEach(link => {
+      if (link.isExternal) {
+          const socialLink = screen.getByLabelText(link.ariaLabel);
+          expect(socialLink).toHaveAttribute('target', '_blank');
+          expect(socialLink).toHaveAttribute('rel', 'noopener noreferrer');
+      }
     });
   });
 
@@ -77,8 +91,10 @@ describe('Footer Component', () => {
 
   it('social links have proper ARIA labels', () => {
     render(<Footer />);
-    const githubLink = screen.getByText('GitHub');
-    expect(githubLink.closest('a')).toHaveAttribute('aria-label', 'GitHub Profile');
+    SOCIAL_LINKS.forEach(social => {
+        const link = screen.getByLabelText(social.ariaLabel);
+        expect(link).toBeDefined();
+    });
   });
 
   it('displays brand description', () => {

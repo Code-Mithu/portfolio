@@ -1,24 +1,10 @@
 'use client';
 
 import React from 'react';
+import { NAVIGATION_LINKS, SOCIAL_LINKS } from '../../lib/constants';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
-
-  const navigationLinks = [
-    { name: 'About', href: '#about' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Experience', href: '#experience' },
-    { name: 'Education', href: '#education' },
-    { name: 'Contact', href: '#contact' },
-  ];
-
-  const socialLinks = [
-    { name: 'GitHub', href: '#', ariaLabel: 'GitHub Profile' },
-    { name: 'LinkedIn', href: '#', ariaLabel: 'LinkedIn Profile' },
-    { name: 'Twitter', href: '#', ariaLabel: 'Twitter Profile' },
-  ];
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -44,7 +30,7 @@ export const Footer = () => {
           <nav aria-label="Footer navigation">
             <h4 className="font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              {navigationLinks.map((link) => (
+              {NAVIGATION_LINKS.map((link) => (
                 <li key={link.name}>
                   <a
                     href={link.href}
@@ -71,12 +57,14 @@ export const Footer = () => {
             <div>
               <h4 className="font-semibold mb-4">Connect</h4>
               <ul className="space-y-2">
-                {socialLinks.map((social) => (
+                {SOCIAL_LINKS.map((social) => (
                   <li key={social.name}>
                     <a
                       href={social.href}
                       aria-label={social.ariaLabel}
                       className="text-slate-300 hover:text-white transition-colors text-sm"
+                      rel={social.isExternal ? 'noopener noreferrer' : undefined}
+                      target={social.isExternal ? '_blank' : undefined}
                     >
                       {social.name}
                     </a>
