@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { ProjectCard, Project } from './ProjectCard';
 import { ProjectActions } from './ProjectActions';
 
@@ -42,14 +43,18 @@ export const FeaturedProjectsSection = ({
             <div className="relative bg-slate-50 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               {featuredProject.thumbnail && (
                 <div className="relative h-80 lg:h-96 overflow-hidden">
-                  <img
+
+                  <Image
                     src={featuredProject.thumbnail}
                     alt={`${featuredProject.title} thumbnail`}
                     className="w-full h-full object-cover"
-                    loading="eager"
+                    fill
+                    priority={true}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 80vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 </div>
+              )}
               )}
               <div className="relative p-8 lg:p-12 -mt-20 lg:-mt-32">
                 <div className="max-w-3xl">

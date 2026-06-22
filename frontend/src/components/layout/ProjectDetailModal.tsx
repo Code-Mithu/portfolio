@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { Project } from './ProjectCard';
 import { ProjectActions } from './ProjectActions';
 
@@ -112,15 +113,16 @@ export const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailMo
         <div className="p-6 space-y-8">
           {/* Thumbnail */}
           {project.thumbnail && (
-            <div className="relative rounded-xl overflow-hidden">
-              <img
+            <div className="relative rounded-xl overflow-hidden h-64 md:h-80">
+              <Image
                 src={project.thumbnail}
                 alt={`${project.title} screenshot`}
-                className="w-full h-64 md:h-80 object-cover"
+                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 768px) 100vw, 80vw"
               />
             </div>
           )}
-
           {/* Detailed Description */}
           {project.detailedDescription && (
             <section>

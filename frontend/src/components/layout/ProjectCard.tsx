@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { ProjectActions } from './ProjectActions';
 
 export interface Project {
@@ -26,16 +27,16 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       {/* Thumbnail Section */}
       {project.thumbnail && (
         <div className="relative h-48 bg-slate-100 overflow-hidden">
-          <img
+          <Image
             src={project.thumbnail}
             alt={`${project.title} thumbnail`}
             className="w-full h-full object-cover"
-            loading="lazy"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
         </div>
       )}
-
       {/* Content Section */}
       <div className="p-6 flex-1 flex flex-col">
         {/* Project Title */}
