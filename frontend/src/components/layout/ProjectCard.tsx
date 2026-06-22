@@ -1,9 +1,10 @@
 import React from 'react';
 
-interface Project {
+export interface Project {
   title: string;
   description: string;
   tech: string[];
+  thumbnail?: string;
   githubUrl?: string;
   demoUrl?: string;
 }
@@ -12,30 +13,74 @@ interface ProjectCardProps {
   project: Project;
 }
 
+/**
+ * Reusable ProjectCard component displaying project information with thumbnail, description,
+ * technology stack, and action buttons. Features responsive design and hover effects.
+ */
 export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   return (
-    <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-      <h4 className="text-xl font-semibold text-primary mb-2">{project.title}</h4>
-      <p className="text-secondary mb-4 text-sm">{project.description}</p>
-      <div className="flex flex-wrap gap-2 mb-4">
-        {project.tech.map((tech) => (
-          <span key={tech} className="px-2 py-1 bg-slate-100 rounded text-xs text-slate-600">
-            {tech}
-          </span>
-        ))}
+    <article className="bg-white rounded-lg border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col h-full">
+      {/* Thumbnail Section */}
+      {project.thumbnail && (
+        <div className="relative h-48 bg-slate-100 overflow-hidden">
+          <img
+            src={project.thumbnail}
+            alt={`${project.title} thumbnail`}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
+        </div>
+      )}
+
+      {/* Content Section */}
+      <div className="p-6 flex-1 flex flex-col">
+        {/* Project Title */}
+        <h3 className="text-xl font-semibold text-primary mb-3">{project.title}</h3>
+
+        {/* Description */}
+        <p className="text-secondary text-sm leading-relaxed mb-4 line-clamp-3">{project.description}</p>
+
+        {/* Technology Stack */}
+        <div className="flex flex-wrap gap-2 mb-6">
+          {project.tech.map((tech) => (
+            <span
+              key={tech}
+              className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium border border-blue-100"
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+
+        {/* Action Area */}
+        <div className="mt-auto pt-4 border-t border-slate-100">
+          <div className="flex gap-3">
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 px-4 py-2 bg-white border border-primary text-primary rounded font-medium text-sm hover:bg-slate-50 transition-colors flex items-center justify-center"
+                aria-label={`View ${project.title} on GitHub`}
+              >
+                GitHub
+              </a>
+            )}
+            {project.demoUrl && (
+              <a
+                href={project.demoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 px-4 py-2 bg-primary text-white rounded font-medium text-sm hover:bg-blue-700 transition-colors flex items-center justify-center"
+                aria-label={`View live demo of ${project.title}`}
+              >
+                Live Demo
+              </a>
+            )}
+          </div>
+        </div>
       </div>
-      <div className="flex gap-4 text-sm">
-        {project.githubUrl && (
-          <a href={project.githubUrl} className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
-            GitHub
-          </a>
-        )}
-        {project.demoUrl && (
-          <a href={project.demoUrl} className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
-            Live Demo
-          </a>
-        )}
-      </div>
-    </div>
+    </article>
   );
 };

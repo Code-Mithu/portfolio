@@ -7,6 +7,7 @@ const projects = [
     description: 'Personal portfolio built with Next.js, Tailwind CSS, and TypeScript.',
     tech: ['Next.js', 'Tailwind CSS', 'TypeScript'],
     githubUrl: '#',
+    thumbnail: 'https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=800&h=600&fit=crop',
   },
   {
     title: 'E-commerce Platform',
@@ -14,6 +15,7 @@ const projects = [
     tech: ['React', 'Node.js', 'PostgreSQL'],
     githubUrl: '#',
     demoUrl: '#',
+    thumbnail: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop',
   },
   {
     title: 'Task Manager App',
@@ -21,6 +23,7 @@ const projects = [
     tech: ['React', 'Firebase'],
     githubUrl: '#',
     demoUrl: '#',
+    thumbnail: 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=800&h=600&fit=crop',
   },
 ];
 
